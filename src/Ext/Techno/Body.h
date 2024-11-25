@@ -100,6 +100,7 @@ public:
 		bool CheckDeathConditions(bool isInLimbo = false);
 		void DepletedAmmoActions();
 		void EatPassengers();
+		int GetTotalSoylentOfPassengers(TechnoClass* pThis, PassengerDeletionTypeClass* pDelType, FootClass* pPassenger);
 		void UpdateShield();
 		void UpdateOnTunnelEnter();
 		void ApplySpawnLimitRange();
