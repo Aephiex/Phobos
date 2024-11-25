@@ -293,7 +293,11 @@ void TechnoExt::ExtData::EatPassengers()
 					if (pDelType->Soylent &&
 						EnumFunctions::CanTargetHouse(pDelType->SoylentAllowedHouses, pThis->Owner, pPassenger->Owner))
 					{
-						int nMoneyToGive = (int)(pPassenger->GetTechnoType()->GetRefund(pPassenger->Owner, true) * pDelType->SoylentMultiplier);
+						int nMoneyToGive = (int)(pPassenger->GetRefund() * pDelType->SoylentMultiplier);
+						if (pPassenger->Passengers.NumPassengers > 0)
+						{
+							nMoneyToGive += this->GetTotalSoylentOfPassengers(pThis, pDelType, pPassenger);
+						}
 
 						if (nMoneyToGive > 0)
 						{
@@ -339,6 +343,29 @@ void TechnoExt::ExtData::EatPassengers()
 			this->PassengerDeletionTimer.Stop();
 		}
 	}
+}
+
+int TechnoExt::ExtData::GetTotalSoylentOfPassengers(TechnoClass* pThis, PassengerDeletionTypeClass* pDelType, FootClass* pPassenger)
+{
+	FootClass* pPassengerL2;
+	int nMoneyToGive = 0;
+	while (pPassenger->Passengers.NumPassengers > 0)
+	{
+		pPassengerL2 = pPassenger->Passengers.RemoveFirstPassenger();
+		if (pPassengerL2)
+		{
+			auto pSource = pDelType->DontScore ? nullptr : pThis;
+			nMoneyToGive += (int)(pPassengerL2->GetRefund() * pDelType->SoylentMultiplier);
+			if (pPassengerL2->Passengers.NumPassengers > 0)
+			{
+				nMoneyToGive += this->GetTotalSoylentOfPassengers(pThis, pDelType, pPassengerL2);
+			}
+			pPassengerL2->KillPassengers(pSource);
+			pPassengerL2->RegisterDestruction(pSource);
+			pPassengerL2->UnInit();
+		}
+	}
+	return nMoneyToGive;
 }
 
 void TechnoExt::ExtData::UpdateShield()
