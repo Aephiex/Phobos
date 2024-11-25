@@ -293,7 +293,7 @@ void TechnoExt::ExtData::EatPassengers()
 					if (pDelType->Soylent &&
 						EnumFunctions::CanTargetHouse(pDelType->SoylentAllowedHouses, pThis->Owner, pPassenger->Owner))
 					{
-						int nMoneyToGive = (int)(pPassenger->GetRefund() * pDelType->SoylentMultiplier);
+						int nMoneyToGive = (int)(pPassenger->GetTechnoType()->GetRefund(pPassenger->Owner, true) * pDelType->SoylentMultiplier);
 						if (pPassenger->Passengers.NumPassengers > 0)
 						{
 							nMoneyToGive += this->GetTotalSoylentOfPassengers(pThis, pDelType, pPassenger);
@@ -355,7 +355,7 @@ int TechnoExt::ExtData::GetTotalSoylentOfPassengers(TechnoClass* pThis, Passenge
 		if (pPassengerL2)
 		{
 			auto pSource = pDelType->DontScore ? nullptr : pThis;
-			nMoneyToGive += (int)(pPassengerL2->GetRefund() * pDelType->SoylentMultiplier);
+			nMoneyToGive += (int)(pPassengerL2->GetTechnoType()->GetRefund(pPassenger->Owner, true) * pDelType->SoylentMultiplier);
 			if (pPassengerL2->Passengers.NumPassengers > 0)
 			{
 				nMoneyToGive += this->GetTotalSoylentOfPassengers(pThis, pDelType, pPassengerL2);
