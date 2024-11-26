@@ -296,7 +296,7 @@ void TechnoExt::ExtData::EatPassengers()
 						int nMoneyToGive = (int)(pPassenger->GetTechnoType()->GetRefund(pPassenger->Owner, true) * pDelType->SoylentMultiplier);
 						if (pPassenger->Passengers.NumPassengers > 0)
 						{
-							nMoneyToGive += this->GetTotalSoylentOfPassengers(pThis, pDelType, pPassenger);
+							nMoneyToGive += GetTotalSoylentOfPassengers(pThis, pDelType, pPassenger);
 						}
 
 						if (nMoneyToGive > 0)
@@ -345,7 +345,7 @@ void TechnoExt::ExtData::EatPassengers()
 	}
 }
 
-int TechnoExt::ExtData::GetTotalSoylentOfPassengers(TechnoClass* pThis, PassengerDeletionTypeClass* pDelType, FootClass* pPassenger)
+static int GetTotalSoylentOfPassengers(TechnoClass* pThis, PassengerDeletionTypeClass* pDelType, FootClass* pPassenger)
 {
 	FootClass* pPassengerL2;
 	int nMoneyToGive = 0;
@@ -358,7 +358,7 @@ int TechnoExt::ExtData::GetTotalSoylentOfPassengers(TechnoClass* pThis, Passenge
 			nMoneyToGive += (int)(pPassengerL2->GetTechnoType()->GetRefund(pPassenger->Owner, true) * pDelType->SoylentMultiplier);
 			if (pPassengerL2->Passengers.NumPassengers > 0)
 			{
-				nMoneyToGive += this->GetTotalSoylentOfPassengers(pThis, pDelType, pPassengerL2);
+				nMoneyToGive += GetTotalSoylentOfPassengers(pThis, pDelType, pPassengerL2);
 			}
 			pPassengerL2->KillPassengers(pSource);
 			pPassengerL2->RegisterDestruction(pSource);
