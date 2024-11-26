@@ -1361,6 +1361,7 @@ Promote.EliteAnimation=           ; Animation
 - You can also change a unit's type when changing ownership into a certain country or side.
   - `Convert.ToNod=E2` specifies a unit will be converted into a Conscript when changing ownership to a Soviet country.
   - `Convert.ToUSSR=FLAKT` specifies a unit will be converted into a Flak Trooper when changing ownership into Russia. Country config has higher priority than side config.
+  - This only happens when unit swaps ownership, it does nothing if the unit is gained through other means that do not swap its ownership.
   - `Convert.HumanToComputer=` and `Convert.ComputerToHuman=` will take precedence when used alongside with this.
 
 ```{warning}
