@@ -345,29 +345,6 @@ void TechnoExt::ExtData::EatPassengers()
 	}
 }
 
-static int GetTotalSoylentOfPassengers(TechnoClass* pThis, PassengerDeletionTypeClass* pDelType, FootClass* pPassenger)
-{
-	FootClass* pPassengerL2;
-	int nMoneyToGive = 0;
-	while (pPassenger->Passengers.NumPassengers > 0)
-	{
-		pPassengerL2 = pPassenger->Passengers.RemoveFirstPassenger();
-		if (pPassengerL2)
-		{
-			auto pSource = pDelType->DontScore ? nullptr : pThis;
-			nMoneyToGive += (int)(pPassengerL2->GetTechnoType()->GetRefund(pPassenger->Owner, true) * pDelType->SoylentMultiplier);
-			if (pPassengerL2->Passengers.NumPassengers > 0)
-			{
-				nMoneyToGive += GetTotalSoylentOfPassengers(pThis, pDelType, pPassengerL2);
-			}
-			pPassengerL2->KillPassengers(pSource);
-			pPassengerL2->RegisterDestruction(pSource);
-			pPassengerL2->UnInit();
-		}
-	}
-	return nMoneyToGive;
-}
-
 void TechnoExt::ExtData::UpdateShield()
 {
 	auto const pTypeExt = this->TypeExtData;
