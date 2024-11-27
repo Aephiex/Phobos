@@ -217,7 +217,7 @@ DEFINE_HOOK(0x7015C9, TechnoClass_Captured_UpdateTracking, 0x6)
 
 		if (!pConvertTo)
 		{
-			auto map = pExt->TypeExtData->Convert_ToHouseOrCountry;
+			auto& map = pExt->TypeExtData->Convert_ToHouseOrCountry;
 			if (map.contains(pNewOwner->Type))
 			{
 				pConvertTo = map.get_or_default(pNewOwner->Type);
