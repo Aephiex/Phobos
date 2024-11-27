@@ -996,6 +996,7 @@ Spawner.AttackImmediately=false  ; boolean
   - `PassengerDeletion.AllowedHouses` determines which houses passengers can belong to be eligible for deletion.
   - `PassengerDeletion.DontScore`, if set to true, makes it so that the deleted passengers are not counted as having been killed by the transport (no experience, not recorded towards owning house's score etc).
   - If `PassengerDeletion.Soylent` is set to true, an amount of credits is refunded to the owner of the transport. The exact amount refunded is determined by the passengers `Soylent`, or if not set, its `Cost` (this is affected by modifiers such as `FactoryPlant`).
+    - If the deleted unit itself is a transport with passengers, its passengers will also be refunded with it.
     - `PassengerDeletion.SoylentMultiplier` is a direct multiplier applied to the refunded amount of credits.
     - `PassengerDeletion.SoylentAllowedHouses` determines which houses passengers can belong to be eligible for refunding.
     - `PassengerDeletion.DisplaySoylent` can be set to true to display the amount of credits refunded on the transport. `PassengerDeletion.DisplaySoylentToHouses` determines which houses can see this and `PassengerDeletion.DisplaySoylentOffset` can be used to adjust the display offset.
