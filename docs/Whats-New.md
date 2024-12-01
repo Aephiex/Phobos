@@ -470,6 +470,7 @@ New:
 - Allow customizing charge turret delays per burst on a weapon (by Starkku)
 - Unit `Speed` setting now accepts floating point values (by Starkku)
 - Added `Convert.To(Side|Country)` logic (by Aephiex)
+- Allow weapon or warhead detonation when techno type is crushed (by Aephiex)
 
 Vanilla fixes:
 - Allow AI to repair structures built from base nodes/trigger action 125/SW delivery in single player missions (by Trsdy)
@@ -598,6 +599,7 @@ Phobos fixes:
 - Fixed `SelfHealGainType=none` not working (changed to `noheal`) (by Starkku)
 - Fixed AircraftTypes gaining self-healing from `UnitsGainSelfHeal` by default (while not displaying the pip) when they should not (by Starkku)
 - Fixed `LaunchSW.IgnoreInhibitors` and `SW.Next.IgnoreInhibitors` overriding corresponding `IgnoreDesignators` settings (by Ollerus)
+- Fixed `PassengerDeletion.Soylent` not taking the passengers of the deleted passenger into consideration.
 
 Fixes / interactions with other extensions:
 - Weapons fired by EMPulse superweapons *(Ares feature)* now fully respect the firing building's FLH.
@@ -608,6 +610,7 @@ Fixes / interactions with other extensions:
 - All forms of type conversion (including Ares') now correctly update `OpenTopped` state of passengers in transport that is converted (by Starkku)
 - Fixed an issue introduced by Ares that caused `Grinding=true` building `ActiveAnim` to be incorrectly restored while `SpecialAnim` was playing and the building was sold, erased or destroyed (by Starkku)
 - Appended Ares' `SW.Shots` usage to extended tooltips (by Trsdy)
+- Fixed Ares' Abductor weapon leaves permanent placement stats when abductor moving vehicles (by Trsdy)
 </details>
 
 ### 0.3.0.1
