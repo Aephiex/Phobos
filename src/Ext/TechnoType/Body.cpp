@@ -85,7 +85,6 @@ int TechnoTypeExt::ExtData::GetCrushableLevel(FootClass* pVictim)
 				RulesExt::Global()->CrushableLevel_Defaults_OmniCrushResistant :
 				RulesExt::Global()->CrushableLevel_Defaults_Uncrushable_Infantry;
 		}
-		return 0;
 	}
 
 	// If this is something else:
