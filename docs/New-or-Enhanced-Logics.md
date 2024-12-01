@@ -1366,6 +1366,38 @@ Convert.HumanToComputer =   ; TechnoType
 Convert.ComputerToHuman =   ; TechnoType
 ```
 
+### Deals damage or fires a weapon when crushed
+
+- A techno can now deal damage or fire a weapon when crushed.
+  - If `WhenCrushed.Weapon` is set at a veterancy level, `WhenCrushed.Warhead` and `WhenCrushed.Damage` at the same veterancy level will be ignored.
+  - `WhenCrushed.Warhead`, if not set, defaults to `C4Warhead`.
+  - `WhenCrushed.Warhead.Full` customizes whether or not the Warhead is detonated fully (as part of a dummy weapon) or simply deals area damage and applies Phobos' Warhead effects. If not set, defaults to true. If set false, no animation defined in the warhead will be played.
+  - `WhenCrushed.Damage`, if not set, defaults to 0.
+  - If `WhenCrushed.Weapon` is not set, `WhenCrushed.Warhead` is not set, and `WhenCrushed.Damage` is either not set or set to 0, no weapon or warhead detonation will occure at all at the veterancy level.
+  - The weapon or the damage is fired from the victim, is detonated at the victim's coords, and is viewed as the victim's house.
+  - Each configuration can be varied based on the unit's veterancy.
+  - Note that if this feature is used on an infantry type you can also define the infantry's `CrushSound=` to be the same as the infantry's `DieSound=` instead of the generic `InfantrySquish`. For example, if this feature is applied to Crazy Ivan to allow his death weapon to trigger when crushed, the code can be:
+    ```
+    [IVAN]
+    CrushSound=CrazyIvanDie
+    WhenCrushed.Weapon=IvanDeath
+    ```
+    In this case crushing Crazy Ivan is equivalent to killing him with direct damage: he explodes with his iconic death cry under the crushing treeds.
+  - Note that the `IvanBomb` feature in Ares does not work with this. If `WhenCrushed.Weapon=IvanBomber` is set, nothing happens when the crush occures.
+
+In `rulesmd.ini`
+```ini
+
+[SOMETECHNO]                                         ; TechnoType
+WhenCrushed.Warhead=                                 ; WarheadType
+WhenCrushed.Warhead.(Rookie|Veteran|Elite)=          ; WarheadType
+WhenCrushed.Warhead.Full=true                        ; boolean
+WhenCrushed.Weapon=                                  ; WeaponType
+WhenCrushed.Weapon.(Rookie|Veteran|Elite)=           ; WeaponType
+WhenCrushed.Damage=                                  ; integer
+WhenCrushed.Damage.(Rookie|Veteran|Elite)=           ; integer
+```
+
 ## Terrain
 
 ### Destroy animation & sound
