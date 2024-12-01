@@ -409,4 +409,5 @@ This page lists all the individual contributions to the project by their author.
 - **Rise of the East community** - extensive playtesting of in-dev features
 - **Aephiex**
   - Added `WhenCrushed=` logic
+  - Added `Convert.To(SideOrCountry)` logic.
   - fixed `PassengerDeletion.Soylent` not calculating the soylent of the passengers of the sold unit
