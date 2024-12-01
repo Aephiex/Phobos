@@ -183,10 +183,6 @@ public:
 		Valueable<double> CrushOverlayExtraForwardTilt;
 		Valueable<double> CrushSlowdownMultiplier;
 
-		Nullable<int> CrusherLevel;
-		Nullable<int> CrushableLevel;
-		Nullable<int> DeployedCrushableLevel;
-
 		Promotable<WarheadTypeClass*> WhenCrushed_Warhead;
 		Promotable<WeaponTypeClass*> WhenCrushed_Weapon;
 		Promotable<int> WhenCrushed_Damage;
@@ -415,10 +411,6 @@ public:
 			, CrushForwardTiltPerFrame {}
 			, CrushOverlayExtraForwardTilt { 0.02 }
 
-			, CrusherLevel {}
-			, CrushableLevel {}
-			, DeployedCrushableLevel {}
-
 			, WhenCrushed_Warhead {}
 			, WhenCrushed_Weapon {}
 			, WhenCrushed_Damage {}
@@ -484,9 +476,6 @@ public:
 		virtual void SaveToStream(PhobosStreamWriter& Stm) override;
 
 		void ApplyTurretOffset(Matrix3D* mtx, double factor = 1.0);
-
-		int GetCrusherLevel(FootClass* pCrusher);
-		int GetCrushableLevel(FootClass* pVictim);
 
 		void WhenCrushedBy(UnitClass* pCrusher, TechnoClass* pVictim);
 

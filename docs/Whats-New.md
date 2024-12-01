@@ -470,7 +470,6 @@ New:
 - Allow customizing charge turret delays per burst on a weapon (by Starkku)
 - Unit `Speed` setting now accepts floating point values (by Starkku)
 - Added `Convert.To(Side|Country)` logic (by Aephiex)
-- Added crusher level implementation (by Aephiex)
 - Allow weapon or warhead detonation when techno type is crushed (by Aephiex)
 
 Vanilla fixes:
