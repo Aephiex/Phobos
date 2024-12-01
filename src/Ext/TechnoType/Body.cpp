@@ -11,6 +11,8 @@
 #include <Ext/BuildingType/Body.h>
 #include <Ext/BulletType/Body.h>
 #include <Ext/Techno/Body.h>
+#include <Ext/WarheadType/Body.h>
+#include <Ext/WeaponType/Body.h>
 
 #include <Utilities/GeneralUtils.h>
 
@@ -106,6 +108,27 @@ int TechnoTypeExt::ExtData::GetCrushableLevel(FootClass* pVictim)
 	}
 
 	return 0;
+}
+
+void TechnoTypeExt::ExtData::WhenCrushedBy(UnitClass* pCrusher, TechnoClass* pVictim)
+{
+	auto pWeapon = this->WhenCrushed_Weapon.Get(pVictim);
+	auto pWarhead = this->WhenCrushed_Warhead.Get(pVictim);
+	int damage = this->WhenCrushed_Damage.Get(pVictim);
+
+	if (pWeapon)
+	{
+		WeaponTypeExt::DetonateAt(pWeapon, pVictim->GetCoords(), pVictim, pWeapon->Damage, pVictim->GetOwningHouse());
+	}
+	else if (pWarhead || damage != 0)
+	{
+		if (!pWarhead)
+			pWarhead = RulesClass::Instance->C4Warhead;
+		if (this->WhenCrushed_Warhead_Full)
+			WarheadTypeExt::DetonateAt(pWarhead, pVictim->GetCoords(), pVictim, damage, pVictim->GetOwningHouse());
+		else
+			MapClass::DamageArea(pVictim->GetCoords(), damage, pVictim, pWarhead, true, pVictim->GetOwningHouse());
+	}
 }
 
 // Ares 0.A source
@@ -489,9 +512,16 @@ void TechnoTypeExt::ExtData::LoadFromINIFile(CCINIClass* const pINI)
 	this->CrushOverlayExtraForwardTilt.Read(exINI, pSection, "CrushOverlayExtraForwardTilt");
 	this->CrushSlowdownMultiplier.Read(exINI, pSection, "CrushSlowdownMultiplier");
 
+
 	this->CrusherLevel.Read(exINI, pSection, "CrusherLevel");
 	this->CrushableLevel.Read(exINI, pSection, "CrushableLevel");
 	this->DeployedCrushableLevel.Read(exINI, pSection, "DeployedCrushableLevel");
+
+	this->WhenCrushed_Warhead.Read(exINI, pSection, "WhenCrushed.Warhead.%s");
+	this->WhenCrushed_Weapon.Read(exINI, pSection, "WhenCrushed.Weapon.%s");
+	this->WhenCrushed_Damage.Read(exINI, pSection, "WhenCrushed.Damage.%s");
+	this->WhenCrushed_Warhead_Full.Read(exINI, pSection, "WhenCrushed.Warhead.Full");
+
 
 	this->DigitalDisplay_Disable.Read(exINI, pSection, "DigitalDisplay.Disable");
 	this->DigitalDisplayTypes.Read(exINI, pSection, "DigitalDisplayTypes");
@@ -514,6 +544,32 @@ void TechnoTypeExt::ExtData::LoadFromINIFile(CCINIClass* const pINI)
 
 	this->Convert_HumanToComputer.Read(exINI, pSection, "Convert.HumanToComputer");
 	this->Convert_ComputerToHuman.Read(exINI, pSection, "Convert.ComputerToHuman");
+
+	char tempBuffer[32];
+
+	this->Convert_ToHouseOrCountry.clear();
+	Nullable<TechnoTypeClass*> technoType;
+	// put all sides into the map
+	for (auto const& pSide : *SideClass::Array)
+	{
+		_snprintf_s(tempBuffer, sizeof(tempBuffer), "Convert.To%s", pSide->ID);
+		technoType.Read(exINI, pSection, tempBuffer);
+		if (technoType.isset())
+		{
+			this->Convert_ToHouseOrCountry.insert(pSide, technoType.Get());
+		}
+	}
+
+	// put all countries into the map
+	for (auto const& pTHouse : *HouseTypeClass::Array)
+	{
+		_snprintf_s(tempBuffer, sizeof(tempBuffer), "Convert.To%s", pTHouse->ID);
+		technoType.Read(exINI, pSection, tempBuffer);
+		if (technoType.isset())
+		{
+			this->Convert_ToHouseOrCountry.insert(pTHouse, technoType.Get());
+		}
+	}
 
 	this->CrateGoodie_RerollChance.Read(exINI, pSection, "CrateGoodie.RerollChance");
 
@@ -550,8 +606,6 @@ void TechnoTypeExt::ExtData::LoadFromINIFile(CCINIClass* const pINI)
 	// Ares 0.C
 	this->NoAmmoWeapon.Read(exINI, pSection, "NoAmmoWeapon");
 	this->NoAmmoAmount.Read(exINI, pSection, "NoAmmoAmount");
-
-	char tempBuffer[32];
 
 	if (this->OwnerObject()->Gunner && this->Insignia_Weapon.empty())
 	{
@@ -864,6 +918,11 @@ void TechnoTypeExt::ExtData::Serialize(T& Stm)
 		.Process(this->CrushableLevel)
 		.Process(this->DeployedCrushableLevel)
 
+		.Process(this->WhenCrushed_Warhead)
+		.Process(this->WhenCrushed_Weapon)
+		.Process(this->WhenCrushed_Damage)
+		.Process(this->WhenCrushed_Warhead_Full)
+
 		.Process(this->DigitalDisplay_Disable)
 		.Process(this->DigitalDisplayTypes)
 
@@ -886,6 +945,7 @@ void TechnoTypeExt::ExtData::Serialize(T& Stm)
 
 		.Process(this->Convert_HumanToComputer)
 		.Process(this->Convert_ComputerToHuman)
+		.Process(this->Convert_ToHouseOrCountry)
 
 		.Process(this->CrateGoodie_RerollChance)
 

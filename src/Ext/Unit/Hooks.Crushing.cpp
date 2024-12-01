@@ -83,6 +83,20 @@ DEFINE_HOOK(0x5F6CE0, FootClass_CanGetCrushed_Hook, 6)
 	return 0;
 }
 
+DEFINE_HOOK(0x7418AA, UnitClass_CrushCell_WhenCrushed, 6)
+{
+	GET(UnitClass* const, pThis, EDI);
+	GET(ObjectClass* const, pVictim, ESI);
+
+	if (auto const pVictimTechno = abstract_cast<TechnoClass*>(pVictim))
+	{
+		auto pVictimExt = TechnoTypeExt::ExtMap.Find(pVictim->GetTechnoType());
+		pVictimExt->WhenCrushedBy(pThis, pVictimTechno);
+	}
+
+	return 0;
+}
+
 DEFINE_HOOK_AGAIN(0x4B1A4B, DriveLocomotionClass_WhileMoving_CrushTilt, 0xD)
 DEFINE_HOOK(0x4B19F7, DriveLocomotionClass_WhileMoving_CrushTilt, 0xD)
 {

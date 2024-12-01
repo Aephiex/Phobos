@@ -187,6 +187,11 @@ public:
 		Nullable<int> CrushableLevel;
 		Nullable<int> DeployedCrushableLevel;
 
+		Promotable<WarheadTypeClass*> WhenCrushed_Warhead;
+		Promotable<WeaponTypeClass*> WhenCrushed_Weapon;
+		Promotable<int> WhenCrushed_Damage;
+		Valueable<bool> WhenCrushed_Warhead_Full;
+
 		Valueable<bool> DigitalDisplay_Disable;
 		ValueableVector<DigitalDisplayTypeClass*> DigitalDisplayTypes;
 
@@ -208,6 +213,7 @@ public:
 
 		Valueable<TechnoTypeClass*> Convert_HumanToComputer;
 		Valueable<TechnoTypeClass*> Convert_ComputerToHuman;
+		PhobosMap<AbstractTypeClass*, TechnoTypeClass*> Convert_ToHouseOrCountry;
 
 		Valueable<double> CrateGoodie_RerollChance;
 
@@ -413,6 +419,11 @@ public:
 			, CrushableLevel {}
 			, DeployedCrushableLevel {}
 
+			, WhenCrushed_Warhead {}
+			, WhenCrushed_Weapon {}
+			, WhenCrushed_Damage {}
+			, WhenCrushed_Warhead_Full { true }
+
 			, DigitalDisplay_Disable { false }
 			, DigitalDisplayTypes {}
 
@@ -435,6 +446,7 @@ public:
 
 			, Convert_HumanToComputer { }
 			, Convert_ComputerToHuman { }
+			, Convert_ToHouseOrCountry { }
 
 			, CrateGoodie_RerollChance { 0.0 }
 
@@ -475,6 +487,8 @@ public:
 
 		int GetCrusherLevel(FootClass* pCrusher);
 		int GetCrushableLevel(FootClass* pVictim);
+
+		void WhenCrushedBy(UnitClass* pCrusher, TechnoClass* pVictim);
 
 		// Ares 0.A
 		const char* GetSelectionGroupID() const;

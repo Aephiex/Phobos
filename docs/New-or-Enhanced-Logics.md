@@ -996,6 +996,7 @@ Spawner.AttackImmediately=false  ; boolean
   - `PassengerDeletion.AllowedHouses` determines which houses passengers can belong to be eligible for deletion.
   - `PassengerDeletion.DontScore`, if set to true, makes it so that the deleted passengers are not counted as having been killed by the transport (no experience, not recorded towards owning house's score etc).
   - If `PassengerDeletion.Soylent` is set to true, an amount of credits is refunded to the owner of the transport. The exact amount refunded is determined by the passengers `Soylent`, or if not set, its `Cost` (this is affected by modifiers such as `FactoryPlant`).
+    - If the deleted unit itself is a transport with passengers, its passengers will also be refunded with it.
     - `PassengerDeletion.SoylentMultiplier` is a direct multiplier applied to the refunded amount of credits.
     - `PassengerDeletion.SoylentAllowedHouses` determines which houses passengers can belong to be eligible for refunding.
     - `PassengerDeletion.DisplaySoylent` can be set to true to display the amount of credits refunded on the transport. `PassengerDeletion.DisplaySoylentToHouses` determines which houses can see this and `PassengerDeletion.DisplaySoylentOffset` can be used to adjust the display offset.
@@ -1357,13 +1358,59 @@ Promote.EliteAnimation=           ; Animation
 ```
 
 ### Convert TechnoType on owner house change
-- You can now change a unit's type when changing ownership from human to computer or from computer to human.
+- You can change a unit's type when changing ownership from human to computer or from computer to human.
+- You can also change a unit's type when changing ownership into a certain country or side.
+  - `Convert.ToNod=E2` specifies a unit will be converted into a Conscript when changing ownership to a Soviet country.
+  - `Convert.ToUSSR=FLAKT` specifies a unit will be converted into a Flak Trooper when changing ownership into Russia. Country config has higher priority than side config.
+  - This only happens when unit swaps ownership, it does nothing if the unit is gained through other means that do not swap its ownership.
+  - `Convert.HumanToComputer=` and `Convert.ComputerToHuman=` will take precedence when used alongside with this.
+
+```{warning}
+This feature has the same limitations as [Ares' Type Conversion](https://ares-developers.github.io/Ares-docs/new/typeconversion.html). This feature does not support BuildingTypes.
+```
+
+```{warning}
+This feature requires Ares 3.0 or higher to function! When Ares 3.0+ is not detected, not all properties of a unit may be updated.
+```
 
 In `rulesmd.ini`:
 ```ini
 [SOMETECHNO]
 Convert.HumanToComputer =   ; TechnoType
 Convert.ComputerToHuman =   ; TechnoType
+Convert.To* =               ; TechnoType, * can be any of the [Sides] and [Countries]
+```
+
+### Deals damage or fires a weapon when crushed
+
+- A techno can now deal damage or fire a weapon when crushed.
+  - If `WhenCrushed.Weapon` is set at a veterancy level, `WhenCrushed.Warhead` and `WhenCrushed.Damage` at the same veterancy level will be ignored.
+  - `WhenCrushed.Warhead`, if not set, defaults to `C4Warhead`.
+  - `WhenCrushed.Warhead.Full` customizes whether or not the Warhead is detonated fully (as part of a dummy weapon) or simply deals area damage and applies Phobos' Warhead effects. If not set, defaults to true. If set false, no animation defined in the warhead will be played.
+  - `WhenCrushed.Damage`, if not set, defaults to 0.
+  - If `WhenCrushed.Weapon` is not set, `WhenCrushed.Warhead` is not set, and `WhenCrushed.Damage` is either not set or set to 0, no weapon or warhead detonation will occure at all at the veterancy level.
+  - The weapon or the damage is fired from the victim, is detonated at the victim's coords, and is viewed as the victim's house.
+  - Each configuration can be varied based on the unit's veterancy.
+  - Note that if this feature is used on an infantry type you can also define the infantry's `CrushSound=` to be the same as the infantry's `DieSound=` instead of the generic `InfantrySquish`. For example, if this feature is applied to Crazy Ivan to allow his death weapon to trigger when crushed, the code can be:
+    ```
+    [IVAN]
+    CrushSound=CrazyIvanDie
+    WhenCrushed.Weapon=IvanDeath
+    ```
+    In this case crushing Crazy Ivan is equivalent to killing him with direct damage: he explodes with his iconic death cry under the crushing treeds.
+  - Note that the `IvanBomb` feature in Ares does not work with this. If `WhenCrushed.Weapon=IvanBomber` is set, nothing happens when the crush occures.
+
+In `rulesmd.ini`
+```ini
+
+[SOMETECHNO]                                         ; TechnoType
+WhenCrushed.Warhead=                                 ; WarheadType
+WhenCrushed.Warhead.(Rookie|Veteran|Elite)=          ; WarheadType
+WhenCrushed.Warhead.Full=true                        ; boolean
+WhenCrushed.Weapon=                                  ; WeaponType
+WhenCrushed.Weapon.(Rookie|Veteran|Elite)=           ; WeaponType
+WhenCrushed.Damage=                                  ; integer
+WhenCrushed.Damage.(Rookie|Veteran|Elite)=           ; integer
 ```
 
 ### Crusher level and crushable level
