@@ -1,6 +1,7 @@
 #include <DriveLocomotionClass.h>
 #include <ShipLocomotionClass.h>
 #include <UnitClass.h>
+#include <OverlayTypeClass.h>
 
 #include <Ext/TechnoType/Body.h>
 #include <Utilities/Macro.h>
@@ -54,6 +55,32 @@ DEFINE_HOOK(0x4B1150, DriveLocomotionClass_WhileMoving_CrushSlowdown, 0x9)
 
 	return SkipGameCode;
 
+}
+
+DEFINE_HOOK(0x5F6CE0, FootClass_CanGetCrushed_Hook, 6)
+{
+	enum { CanCrush = 0x5F6D85, CannotCrush = 0x5F6D8C };
+
+	GET(FootClass* const, pCrusher, EDI);
+	GET(FootClass* const, pVictim, ESI);
+
+	// An eligible crusher must be a unit with "Crusher=yes".
+	// An eligible victim must be either an infantry, a unit, or an overlay.
+	// Otherwise, fallback to unmodded behavior.
+	if (RulesExt::Global()->CrusherLevelEnabled &&
+		pCrusher && pCrusher->GetTechnoType()->Crusher && abstract_cast<UnitTypeClass*>(pCrusher->GetTechnoType()) &&
+		pVictim && (abstract_cast<InfantryTypeClass*>(pVictim->GetTechnoType()) ||
+			abstract_cast<UnitTypeClass*>(pVictim->GetTechnoType()) ||
+			abstract_cast<OverlayTypeClass*>(pVictim->GetTechnoType())))
+	{
+		auto pCrusherExt = TechnoTypeExt::ExtMap.Find(pCrusher->GetTechnoType());
+		auto pVictimExt = TechnoTypeExt::ExtMap.Find(pVictim->GetTechnoType());
+		int crusherLevel = pCrusherExt->GetCrusherLevel(pCrusher);
+		int crushableLevel = pVictimExt->GetCrushableLevel(pVictim);
+		return crusherLevel > crushableLevel ? CanCrush : CannotCrush;
+	}
+
+	return 0;
 }
 
 DEFINE_HOOK(0x7418AA, UnitClass_CrushCell_WhenCrushed, 6)
