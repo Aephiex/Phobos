@@ -103,6 +103,7 @@ public:
 		Valueable<WeaponTypeClass*> WarpOutWeapon;
 		Valueable<bool> WarpInWeapon_UseDistanceAsDamage;
 
+		int SubterraneanSpeed;
 		Nullable<int> SubterraneanHeight;
 
 		ValueableVector<AnimTypeClass*> OreGathering_Anims;
@@ -182,6 +183,11 @@ public:
 		Valueable<double> CrushOverlayExtraForwardTilt;
 		Valueable<double> CrushSlowdownMultiplier;
 
+		Promotable<WarheadTypeClass*> WhenCrushed_Warhead;
+		Promotable<WeaponTypeClass*> WhenCrushed_Weapon;
+		Promotable<int> WhenCrushed_Damage;
+		Valueable<bool> WhenCrushed_Warhead_Full;
+
 		Valueable<bool> DigitalDisplay_Disable;
 		ValueableVector<DigitalDisplayTypeClass*> DigitalDisplayTypes;
 
@@ -203,6 +209,7 @@ public:
 
 		Valueable<TechnoTypeClass*> Convert_HumanToComputer;
 		Valueable<TechnoTypeClass*> Convert_ComputerToHuman;
+		PhobosMap<AbstractTypeClass*, TechnoTypeClass*> Convert_ToHouseOrCountry;
 
 		Valueable<double> CrateGoodie_RerollChance;
 
@@ -297,6 +304,7 @@ public:
 			, WarpOutWeapon {}
 			, WarpInWeapon_UseDistanceAsDamage { false }
 
+			, SubterraneanSpeed { -1 }
 			, SubterraneanHeight {}
 
 			, OreGathering_Anims {}
@@ -403,6 +411,11 @@ public:
 			, CrushForwardTiltPerFrame {}
 			, CrushOverlayExtraForwardTilt { 0.02 }
 
+			, WhenCrushed_Warhead {}
+			, WhenCrushed_Weapon {}
+			, WhenCrushed_Damage {}
+			, WhenCrushed_Warhead_Full { true }
+
 			, DigitalDisplay_Disable { false }
 			, DigitalDisplayTypes {}
 
@@ -425,6 +438,7 @@ public:
 
 			, Convert_HumanToComputer { }
 			, Convert_ComputerToHuman { }
+			, Convert_ToHouseOrCountry { }
 
 			, CrateGoodie_RerollChance { 0.0 }
 
@@ -462,6 +476,8 @@ public:
 		virtual void SaveToStream(PhobosStreamWriter& Stm) override;
 
 		void ApplyTurretOffset(Matrix3D* mtx, double factor = 1.0);
+
+		void WhenCrushedBy(UnitClass* pCrusher, TechnoClass* pVictim);
 
 		// Ares 0.A
 		const char* GetSelectionGroupID() const;
