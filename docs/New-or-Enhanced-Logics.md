@@ -1397,7 +1397,7 @@ Convert.ComputerToHuman =   ; TechnoType
     - At 2/2, a vehicle can crush Tesla Troopers and deployed Guardian G.I.s, but it can't crush IFVs and is still crushable by Battle Fortresses, just like a [Scorpion Tank](https://cnc-central.fandom.com/wiki/Scorpion_tank_(Tiberium_Wars)) does with the Dozer blades upgrade.
     - At 4/4, a vehicle can crush almost anything else, even Battle Fortresses, just like a [MARV](https://cnc-central.fandom.com/wiki/Mammoth_Armored_Reclamation_Vehicle) does.
 - Other usage notes:
-  - A unit must have a locomotor type that supports crushing before it can crush something. Most naval units do not have a locomotor that do, except for the amphibious transports.
+  - A unit must have a locomotor type that supports crushing before it can crush something. Most naval units do not have a locomotor that does, except for the amphibious transports.
   - In an unmodded game, it doesn't even try to check if it can crush something if it has `Crusher=no`, meaning `OmniCrusher=yes` make no sense on a unit with `Crusher=no`. This behavior isn't changed by this feature, meaning you will still need `Crusher=yes` for a positive `CrushableLevel` to function.
   - In an unmodded game, infantries can never crush anything regardless of `Crusher=yes` or locomotor types. This behavior isn't changed by this feature, meaning a positive `CrusherLevel` makes no sense on an infantry type.
   - If `CrusherLevel` is set, `OmniCrusher` is redundant and ignored.
