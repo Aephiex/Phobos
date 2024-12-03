@@ -1397,7 +1397,7 @@ Convert.ComputerToHuman =   ; TechnoType
     - At 2/2, a vehicle can crush Tesla Troopers and deployed Guardian G.I.s, but it can't crush IFVs and is still crushable by Battle Fortresses, just like a [Scorpion Tank](https://cnc-central.fandom.com/wiki/Scorpion_tank_(Tiberium_Wars)) does with the Dozer blades upgrade.
     - At 4/4, a vehicle can crush almost anything else, even Battle Fortresses, just like a [MARV](https://cnc-central.fandom.com/wiki/Mammoth_Armored_Reclamation_Vehicle) does.
 - Other usage notes:
-  - A unit must has a locomotor that supports crushing before it can crush something. Most naval units don't, safe for the amphibious transports.
+  - A unit must has a locomotor that supports crushing before it can crush something. Most naval units don't, save for the amphibious transports.
   - In an unmodded game, it doesn't even try to check if it can crush something if it has `Crusher=no`, meaning `OmniCrusher=yes` make no sense on a unit with `Crusher=no`. This behavior isn't changed by this feature, meaning you will still need `Crusher=yes` for a positive `CrushableLevel` to function.
   - In an unmodded game, infantries can never crush anything regardless of `Crusher=yes` or locomotors. This behavior isn't changed by this feature, meaning a positive `CrusherLevel` makes no sense on an infantry type.
   - If `CrusherLevel` is set, `OmniCrusher` is redundant and ignored.
@@ -1499,9 +1499,9 @@ WhenCrush.DamageMult.Overlays=0%            ; double
 
 ### When techno infiltrates a structure
 
-- A techno can now deal damage or fire a weapon when it infiltrates a structure. What makes this different from `SpyEffect.VictimSuperWeapon=` is it can be configured per agent techno type.
+- A techno can now deal damage or fire a weapon when it infiltrates a structure. What makes this different from `SpyEffect.VictimSuperWeapon=` is it can be configured per agent techno type and can vary based on the agent's veterancy.
   - `WhenInfiltrate.Warhead` and `WhenInfiltrate.Weapon` can be specified much like `WhenCrushed.(Warhead|Weapon|Damage)`, and the same rules are followed. If weapon is specified then warhead and damage on the same veterancy level are ignored.
-  - The warhead or weapon is detonated where the structure is, the damage come from the infantry and is viewed the same house as it.
+  - The warhead or weapon is detonated where the structure is, the damage comes from the infantry and is viewed the same house as it.
   - Note that the `IvanBomb` feature in Ares does not work with this. If `WhenInfiltrate.Weapon=IvanBomber` is set, nothing happens when the unit infiltrates, aside from the normal infiltration effect.
 
 In `rulesmd.ini`
