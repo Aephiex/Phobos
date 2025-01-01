@@ -42,6 +42,11 @@ void SideExt::ExtData::LoadFromINIFile(CCINIClass* pINI)
 	this->ToolTip_Background_Opacity.Read(exINI, pSection, "ToolTip.Background.Opacity");
 	this->ToolTip_Background_BlurSize.Read(exINI, pSection, "ToolTip.Background.BlurSize");
 	this->BriefingTheme = pINI->ReadTheme(pSection, "BriefingTheme", this->BriefingTheme);
+
+	this->SuperWeaponSidebar_TopShape.Read(exINI, pSection, "SuperWeaponSidebar.TopShape");
+	this->SuperWeaponSidebar_CenterShape.Read(exINI, pSection, "SuperWeaponSidebar.CenterShape");
+	this->SuperWeaponSidebar_BottomShape.Read(exINI, pSection, "SuperWeaponSidebar.BottomShape");
+	this->SuperWeaponSidebar_ToggleShape.Read(exINI, pSection, "SuperWeaponSidebar.ToggleShape");
 }
 
 // =============================
@@ -71,6 +76,10 @@ void SideExt::ExtData::Serialize(T& Stm)
 		.Process(this->IngameScore_WinTheme)
 		.Process(this->IngameScore_LoseTheme)
 		.Process(this->BriefingTheme)
+		.Process(this->SuperWeaponSidebar_TopShape)
+		.Process(this->SuperWeaponSidebar_CenterShape)
+		.Process(this->SuperWeaponSidebar_BottomShape)
+		.Process(this->SuperWeaponSidebar_ToggleShape)
 		;
 }
 

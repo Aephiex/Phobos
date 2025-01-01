@@ -37,6 +37,11 @@ public:
 		Nullable<float> ToolTip_Background_BlurSize;
 		Valueable<int> BriefingTheme;
 
+		Valueable<SHPStruct*> SuperWeaponSidebar_TopShape;
+		Valueable<SHPStruct*> SuperWeaponSidebar_CenterShape;
+		Valueable<SHPStruct*> SuperWeaponSidebar_BottomShape;
+		Valueable<SHPStruct*> SuperWeaponSidebar_ToggleShape;
+
 		ExtData(SideClass* OwnerObject) : Extension<SideClass>(OwnerObject)
 			, ArrayIndex { -1 }
 			, Sidebar_GDIPositions { false }
@@ -58,6 +63,10 @@ public:
 			, ToolTip_Background_Opacity { }
 			, ToolTip_Background_BlurSize { }
 			, BriefingTheme { -1 }
+			, SuperWeaponSidebar_TopShape { }
+			, SuperWeaponSidebar_CenterShape { }
+			, SuperWeaponSidebar_BottomShape { }
+			, SuperWeaponSidebar_ToggleShape { nullptr }
 		{ }
 
 		virtual ~ExtData() = default;

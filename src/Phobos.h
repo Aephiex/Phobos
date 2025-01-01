@@ -53,6 +53,11 @@ public:
 		static double PowerDelta_ConditionYellow;
 		static double PowerDelta_ConditionRed;
 		static bool CenterPauseMenuBackground;
+		static bool SuperWeaponSidebar;
+		static int SuperWeaponSidebar_Interval;
+		static int SuperWeaponSidebar_Max;
+		static int SuperWeaponSidebar_MaxColumns;
+		static int SuperWeaponSidebar_CameoHeight;
 		static bool WeedsCounter_Show;
 		static bool AnchoredToolTips;
 
