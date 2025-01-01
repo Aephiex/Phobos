@@ -379,6 +379,7 @@ This page lists all the individual contributions to the project by their author.
   - Allow using waypoints, area guard and attack move with aircraft
   - Fix `Stop` command not working so well in some cases
   - Fast access vehicle
+  - No turret unit turn to the target
 - **Ollerus**
   - Build limit group enhancement
   - Customizable rocker amplitude
@@ -387,6 +388,7 @@ This page lists all the individual contributions to the project by their author.
   - Skirmish AI "sell all buildings and set all technos to hunt" behavior dehardcode
   - Skirmish AI "gather when MCV deploy" behavior dehardcode
   - Global value of `RepairBaseNodes`
+  - No turret unit turn to the target
 - **tyuah8** - Drive/Jumpjet/Ship/Teleport locomotor did not power on when it is un-piggybacked bugfix
 - **Aephiex**
   - Aggressive stance toggle command (auto target unarmed enemy buildings)
