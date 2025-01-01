@@ -473,6 +473,7 @@ New:
 - Unit `Speed` setting now accepts floating point values (by Starkku)
 - Aggressive stance toggle command (auto target unarmed enemy buildings) (by Aephiex)
 - Crusher level system (by Aephiex)
+- Basic event handler system (by Aephiex)
 
 Vanilla fixes:
 - Allow AI to repair structures built from base nodes/trigger action 125/SW delivery in single player missions (by Trsdy)

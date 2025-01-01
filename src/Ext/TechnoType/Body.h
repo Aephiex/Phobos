@@ -12,6 +12,7 @@
 #include <New/Type/Affiliated/PassengerDeletionTypeClass.h>
 #include <New/Type/DigitalDisplayTypeClass.h>
 #include <New/Type/Affiliated/DroppodTypeClass.h>
+#include <New/Type/EventHandlerTypeClass.h>
 
 class Matrix3D;
 
@@ -238,6 +239,8 @@ public:
 		Nullable<AnimTypeClass*> Wake;
 		Nullable<AnimTypeClass*> Wake_Grapple;
 		Nullable<AnimTypeClass*> Wake_Sinking;
+
+		PhobosMap<EventTypeClass*, std::vector<EventHandlerTypeClass*>> EventHandlersMap;
 
 		struct LaserTrailDataEntry
 		{
@@ -471,10 +474,13 @@ public:
 			, Wake { }
 			, Wake_Grapple { }
 			, Wake_Sinking { }
+
+			, EventHandlersMap { }
 		{ }
 
 		virtual ~ExtData() = default;
 		virtual void LoadFromINIFile(CCINIClass* pINI) override;
+		void AppendEventHandlerType(EventHandlerTypeClass* pEventHandlerTypeClass);
 		virtual void Initialize() override;
 
 		virtual void InvalidatePointer(void* ptr, bool bRemoved) override { }
@@ -489,6 +495,8 @@ public:
 		int GetCrushableLevel(FootClass* pVictim) const;
 
 		bool CanToggleAggressiveStance(TechnoClass* pTechno);
+
+		void InvokeEvent(EventTypeClass* pEventTypeClass, TechnoClass* pMe, TechnoClass* pThey) const;
 
 		// Ares 0.A
 		const char* GetSelectionGroupID() const;

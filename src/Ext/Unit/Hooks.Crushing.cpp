@@ -129,3 +129,19 @@ DEFINE_HOOK(0x5F6CE0, FootClass_CanGetCrushed_Hook, 6)
 
 	return 0;
 }
+
+DEFINE_HOOK(0x7418AA, UnitClass_CrushCell_WhenCrushed, 6)
+{
+	GET(UnitClass* const, pCrusher, EDI);
+	GET(ObjectClass* const, pVictim, ESI);
+
+	if (auto const pVictimTechno = abstract_cast<TechnoClass*>(pVictim))
+	{
+		auto pCrusherExt = TechnoTypeExt::ExtMap.Find(pCrusher->GetTechnoType());
+		pCrusherExt->InvokeEvent(EventTypeClass::WhenCrush, pCrusher, pVictimTechno);
+		auto pVictimExt = TechnoTypeExt::ExtMap.Find(pVictimTechno->GetTechnoType());
+		pVictimExt->InvokeEvent(EventTypeClass::WhenCrushed, pVictimTechno, pCrusher);
+	}
+
+	return 0;
+}

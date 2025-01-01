@@ -139,6 +139,8 @@ DEFINE_HOOK(0x6F42F7, TechnoClass_Init, 0x2)
 
 	pExt->InitAggressiveStance();
 
+	pExt->TypeExtData->InvokeEvent(EventTypeClass::WhenCreated, pThis, nullptr);
+
 	return 0;
 }
 
