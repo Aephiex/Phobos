@@ -245,6 +245,7 @@ public:
 		Nullable<bool> NoQueueUpToEnter;
 		Nullable<bool> NoQueueUpToUnload;
 		Valueable<bool> CanBeBuiltOn;
+		Valueable<bool> HarvesterQuickUnloader;
 
 		Nullable<AnimTypeClass*> Wake;
 		Nullable<AnimTypeClass*> Wake_Grapple;
@@ -490,6 +491,7 @@ public:
 			, NoQueueUpToEnter {}
 			, NoQueueUpToUnload {}
 			, CanBeBuiltOn { false }
+			, HarvesterQuickUnloader { false }
 
 			, Wake { }
 			, Wake_Grapple { }

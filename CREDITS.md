@@ -382,6 +382,7 @@ This page lists all the individual contributions to the project by their author.
   - No turret unit turn to the target
   - Building placing and deploying logic enhancement
   - Burst without delay
+  - Simplified unloading for miners
 - **Ollerus**
   - Build limit group enhancement
   - Customizable rocker amplitude
@@ -392,6 +393,7 @@ This page lists all the individual contributions to the project by their author.
   - Global value of `RepairBaseNodes`
   - No turret unit turn to the target
   - Burst without delay
+  - Simplified unloading for miners
 - **tyuah8** - Drive/Jumpjet/Ship/Teleport locomotor did not power on when it is un-piggybacked bugfix
 - **Aephiex**
   - Aggressive stance toggle command (auto target unarmed enemy buildings)
