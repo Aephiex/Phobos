@@ -93,6 +93,7 @@ public:
 		Valueable<double> HeightShadowScaling_MinScale;
 		double AirShadowBaseScale_log;
 
+		Valueable<bool> ExpandBuildingPlace;
 		Valueable<bool> ExtendedAircraftMissions;
 		Valueable<bool> NoQueueUpToEnter;
 		Valueable<bool> NoQueueUpToUnload;
@@ -238,6 +239,7 @@ public:
 			, HeightShadowScaling_MinScale { 0.0 }
 			, AirShadowBaseScale_log { 0.693376137 }
 
+			, ExpandBuildingPlace { false }
 			, ExtendedAircraftMissions { false }
 			, NoQueueUpToEnter { false }
 			, NoQueueUpToUnload { false }

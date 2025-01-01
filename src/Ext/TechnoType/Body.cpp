@@ -662,6 +662,7 @@ void TechnoTypeExt::ExtData::LoadFromINIFile(CCINIClass* const pINI)
 
 	this->NoQueueUpToEnter.Read(exINI, pSection, "NoQueueUpToEnter");
 	this->NoQueueUpToUnload.Read(exINI, pSection, "NoQueueUpToUnload");
+	this->CanBeBuiltOn.Read(exINI, pSection, "CanBeBuiltOn");
 
 	this->Wake.Read(exINI, pSection, "Wake");
 	this->Wake_Grapple.Read(exINI, pSection, "Wake.Grapple");
@@ -1082,6 +1083,7 @@ void TechnoTypeExt::ExtData::Serialize(T& Stm)
 
 		.Process(this->NoQueueUpToEnter)
 		.Process(this->NoQueueUpToUnload)
+		.Process(this->CanBeBuiltOn)
 
 		.Process(this->Wake)
 		.Process(this->Wake_Grapple)

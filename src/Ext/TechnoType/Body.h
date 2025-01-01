@@ -244,6 +244,7 @@ public:
 
 		Nullable<bool> NoQueueUpToEnter;
 		Nullable<bool> NoQueueUpToUnload;
+		Valueable<bool> CanBeBuiltOn;
 
 		Nullable<AnimTypeClass*> Wake;
 		Nullable<AnimTypeClass*> Wake_Grapple;
@@ -488,6 +489,7 @@ public:
 
 			, NoQueueUpToEnter {}
 			, NoQueueUpToUnload {}
+			, CanBeBuiltOn { false }
 
 			, Wake { }
 			, Wake_Grapple { }

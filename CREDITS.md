@@ -380,6 +380,7 @@ This page lists all the individual contributions to the project by their author.
   - Fix `Stop` command not working so well in some cases
   - Fast access vehicle
   - No turret unit turn to the target
+  - Building placing and deploying logic enhancement
 - **Ollerus**
   - Build limit group enhancement
   - Customizable rocker amplitude
