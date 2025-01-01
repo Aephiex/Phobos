@@ -1,0 +1,31 @@
+Latest Phobos develop build
+
+Aephiex's works:
+• Aggressive Stance
+	https://github.com/Aephiex/Phobos/AggressiveStance
+• Crusher Level System
+	https://github.com/Aephiex/Phobos/CrusherLevelSystem
+• Basic Event System
+	https://github.com/Aephiex/Phobos/BasicEventSystem
+
+NetsuNegi's works:
+• Super Weapon Sidebar
+	https://github.com/NetsuNegi/Phobos/tree/origin/branch/exclusive-sw-sidebar
+
+psi-cmd's works:
+• Auto Load Command
+	https://github.com/psi-cmd/Phobos/tree/autoload
+
+CrimRecya's works:
+• Delay auto attack vs. recently MC-ed friendlies
+	https://github.com/CrimRecya/Phobos/tree/develop-AttackMCDelay
+• Fast board vehicles
+	https://github.com/CrimRecya/Phobos/tree/develop-FastAccessVehicle
+• No turret units turn to target when weapon is in CD
+	https://github.com/CrimRecya/Phobos/tree/develop-NoTurretTurn
+• Building placement enhanced
+	https://github.com/CrimRecya/Phobos/tree/develop-BuildingPlacing
+• True zero burst delay
+	https://github.com/CrimRecya/Phobos/tree/develop-BurstNoDelay
+• Harvesters quick unload
+	https://github.com/CrimRecya/Phobos/tree/develop-QuickUnloader
