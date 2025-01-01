@@ -471,6 +471,7 @@ New:
 - `<Player @ X>` can now be used as owner for pre-placed objects on skirmish and multiplayer maps (by Starkku)
 - Allow customizing charge turret delays per burst on a weapon (by Starkku)
 - Delay automatic attack on the controlled unit (by CrimRecya)
+- Fast access vehicle (by CrimRecya)
 - Unit `Speed` setting now accepts floating point values (by Starkku)
 - Exclusive SuperWeapon Sidebar (by NetsuNegi & CrimRecya)
 - Autoload hotkey command (by psi-cmd, Aephiex)

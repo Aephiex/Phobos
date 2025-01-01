@@ -378,6 +378,7 @@ This page lists all the individual contributions to the project by their author.
   - Exclusive SuperWeapon Sidebar
   - Allow using waypoints, area guard and attack move with aircraft
   - Fix `Stop` command not working so well in some cases
+  - Fast access vehicle
 - **Ollerus**
   - Build limit group enhancement
   - Customizable rocker amplitude
