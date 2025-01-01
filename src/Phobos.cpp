@@ -61,6 +61,9 @@ void Phobos::CmdLineParse(char** ppArgs, int nNumArgs)
 		}
 	}
 
+	// myPlayBranch custom: always allow inheritance
+	foundInheritance = true;
+
 	if (foundInclude)
 	{
 		Patch::Apply_RAW(0x474200, // Apply CCINIClass_ReadCCFile1_DisableAres

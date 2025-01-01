@@ -133,6 +133,8 @@ DEFINE_HOOK(0x4F7877, HouseClass_CanBuild_UpgradesInteraction_WithoutAres, 0x5)
 
 #pragma endregion
 
+// myPlayBranch custom: disable the powerup related hooks because it causes the Foehn barracks to not look correct
+/*
 #pragma region UpgradeAnimLogic
 
 // Always parse all info for PowerUp anims if building can have even one upgrade, including power settings.
@@ -269,3 +271,4 @@ DEFINE_HOOK(0x45189D, BuildingClass_AnimUpdate_Upgrades, 0x6)
 }
 
 #pragma endregion
+*/
