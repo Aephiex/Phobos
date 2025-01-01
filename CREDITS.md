@@ -381,6 +381,7 @@ This page lists all the individual contributions to the project by their author.
   - Fast access vehicle
   - No turret unit turn to the target
   - Building placing and deploying logic enhancement
+  - Burst without delay
 - **Ollerus**
   - Build limit group enhancement
   - Customizable rocker amplitude
@@ -390,6 +391,7 @@ This page lists all the individual contributions to the project by their author.
   - Skirmish AI "gather when MCV deploy" behavior dehardcode
   - Global value of `RepairBaseNodes`
   - No turret unit turn to the target
+  - Burst without delay
 - **tyuah8** - Drive/Jumpjet/Ship/Teleport locomotor did not power on when it is un-piggybacked bugfix
 - **Aephiex**
   - Aggressive stance toggle command (auto target unarmed enemy buildings)
