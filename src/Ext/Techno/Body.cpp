@@ -502,6 +502,7 @@ void TechnoExt::ExtData::Serialize(T& Stm)
 		.Process(this->HasRemainingWarpInDelay)
 		.Process(this->LastWarpInDelay)
 		.Process(this->IsBeingChronoSphered)
+		.Process(this->AggressiveStance)
 		;
 }
 
@@ -515,6 +516,40 @@ void TechnoExt::ExtData::SaveToStream(PhobosStreamWriter& Stm)
 {
 	Extension<TechnoClass>::SaveToStream(Stm);
 	this->Serialize(Stm);
+}
+
+void TechnoExt::ExtData::InitAggressiveStance()
+{
+	this->AggressiveStance = this->TypeExtData->AggressiveStance.Get();
+}
+
+bool TechnoExt::ExtData::GetAggressiveStance() const
+{
+	// if this is a passenger then obey the configuration of the transport
+	if (auto pTransport = this->OwnerObject()->Transporter)
+	{
+		auto pTransportExt = TechnoExt::ExtMap.Find(pTransport);
+		return pTransportExt->GetAggressiveStance();
+	}
+
+	return this->AggressiveStance;
+}
+
+void TechnoExt::ExtData::ToggleAggressiveStance()
+{
+	
+	if (this->AggressiveStance)
+	{
+		// toggle off aggressive stance
+		this->AggressiveStance = false;
+		// stop current target
+		this->OwnerObject()->SetTarget(nullptr);
+	}
+	else
+	{
+		// toggle on aggressive stance
+		this->AggressiveStance = true;
+	}
 }
 
 bool TechnoExt::LoadGlobals(PhobosStreamReader& Stm)
