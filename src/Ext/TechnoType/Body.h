@@ -164,6 +164,12 @@ public:
 		Valueable<bool> Passengers_SyncOwner;
 		Valueable<bool> Passengers_SyncOwner_RevertOnExit;
 
+		ValueableVector<TechnoTypeClass*> PassengersWhitelist;
+		ValueableVector<TechnoTypeClass*> PassengersBlacklist;
+		ValueableVector<TechnoTypeClass*> AllowedOccupiers;
+		Valueable<bool> Passengers_BySize;
+		Valueable<bool> NoManualEnter;
+
 		Nullable<bool> IronCurtain_KeptOnDeploy;
 		Nullable<IronCurtainEffect> IronCurtain_Effect;
 		Nullable<WarheadTypeClass*> IronCurtain_KillWarhead;
@@ -390,6 +396,12 @@ public:
 			, Passengers_SyncOwner { false }
 			, Passengers_SyncOwner_RevertOnExit { true }
 
+			, PassengersWhitelist {}
+			, PassengersBlacklist {}
+			, AllowedOccupiers {}
+			, Passengers_BySize { true }
+			, NoManualEnter { false }
+
 			, OnlyUseLandSequences { false }
 
 			, PronePrimaryFireFLH {}
@@ -497,6 +509,11 @@ public:
 		bool CanToggleAggressiveStance(TechnoClass* pTechno);
 
 		void InvokeEvent(EventTypeClass* pEventTypeClass, TechnoClass* pMe, TechnoClass* pThey) const;
+
+		bool CanLoadPassenger(TechnoClass* pTransport, TechnoClass* pPassenger) const;
+		bool CanLoadAny(TechnoClass* pTransport, std::vector<TechnoClass*> pPassengerList) const;
+		bool CanLoadAny(TechnoClass* pTransport, std::map<int, std::vector<TechnoClass*>> passengerMap, std::set<int> passengerSizes) const;
+		bool CanBeOccupiedBy(TechnoClass* whom) const;
 
 		// Ares 0.A
 		const char* GetSelectionGroupID() const;

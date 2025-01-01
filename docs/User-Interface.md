@@ -317,6 +317,19 @@ SelectionFlashDuration=0  ; integer, number of frames
 - Switches on/off [frame by frame mode](Miscellanous.html#frame-step-in).
 - For localization add `TXT_FRAME_BY_FRAME` and `TXT_FRAME_BY_FRAME_DESC` into your `.csf` file.
 
+### `[ ]` Auto Load
+- A shortcut to quickly command multiple units to board multiple transports at a same time. Select units and valid transports, then press the auto load hotkey, the units will be distributed among the transports and will be ordered to board them.
+  - Transports can be considered passengers if fully loaded, or `NoManualEnter=yes`, or it can't actually load anything from the selected passengers.
+  - Larger passengers are loaded first, and transports with smaller size limits are used first.
+  - At a given unit size and size limit, passengers will be diversely distributed into transports if possible.
+  - Ares `Passengers.Allowed=` and `Passengers.Disallowed=` are taken into account.
+- It also supports Bio Reactors, Tank Bunkers, and garrisonable structures. Select valid candidates and multiple said buildings while pressing Shift, then press the auto load hotkey, the units will be distributed among these buildings and will be ordered to enter them.
+  - If auto board transport can happen among selected units, then said logic takes precedence.
+  - A building is viewed as a Bio Reactor if it has `Passengers` >= 1, and it has `InfantryAbsorb=yes`.
+  - A building is viewed as a Tank Bunker if it has `Bunker=yes`.
+  - Neutral buildings can't be selected with own troops at a same time. Select either multiple Battle Bunkers or already partly garrisoned civilian structures to make use of the auto load hotkey.
+- For localization add `TXT_AUTO_LOAD` and `TXT_AUTO_LOAD_DESC` into your `.csf` file.
+
 ### `[ ]` Toggle Aggressive Stance
 - Switches on/off aggressive stance for selected units and structures.
   - Much like how the deploy command work on G.I.s. If all selected technos that may toggle aggressive stance are already aggressive stance, they will exit it, otherwise they will enter it.

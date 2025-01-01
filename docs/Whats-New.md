@@ -472,6 +472,7 @@ New:
 - Allow customizing charge turret delays per burst on a weapon (by Starkku)
 - Unit `Speed` setting now accepts floating point values (by Starkku)
 - Exclusive SuperWeapon Sidebar (by NetsuNegi & CrimRecya)
+- Autoload hotkey command (by psi-cmd, Aephiex)
 - Aggressive stance toggle command (auto target unarmed enemy buildings) (by Aephiex)
 - Crusher level system (by Aephiex)
 - Basic event handler system (by Aephiex)

@@ -14,6 +14,7 @@
 #include "FireTacticalSW.h"
 #include <Ext/Sidebar/SWSidebar/SWSidebarClass.h>
 
+#include "AutoLoad.h"
 #include "AggressiveStance.h"
 
 DEFINE_HOOK(0x533066, CommandClassCallback_Register, 0x6)
@@ -37,6 +38,7 @@ DEFINE_HOOK(0x533066, CommandClassCallback_Register, 0x6)
 	SWSidebarClass::Commands[8] = MakeCommand<FireTacticalSWCommandClass<8>>();
 	SWSidebarClass::Commands[9] = MakeCommand<FireTacticalSWCommandClass<9>>();
 
+	MakeCommand<AutoLoadCommandClass>();
 	MakeCommand<AggressiveStanceClass>();
 
 	if (Phobos::Config::DevelopmentCommands)
