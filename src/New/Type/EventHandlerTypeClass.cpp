@@ -35,6 +35,8 @@ void EventHandlerTypeClass::LoadForScope(INI_EX& exINI, const char* pSection, co
 	}
 
 	LoadForExtendedScope(exINI, pSection, scopeType, EventExtendedScopeType::Transport, scopeName, "Transport");
+	LoadForExtendedScope(exINI, pSection, scopeType, EventExtendedScopeType::Bunker, scopeName, "Bunker");
+	LoadForExtendedScope(exINI, pSection, scopeType, EventExtendedScopeType::MindController, scopeName, "MindController");
 }
 
 void EventHandlerTypeClass::LoadForExtendedScope(INI_EX& exINI, const char* pSection, const EventScopeType scopeType, const EventExtendedScopeType extendedScopeType, const char* scopeName, const char* extendedScopeName)
@@ -65,31 +67,31 @@ void EventHandlerTypeClass::SaveToStream(PhobosStreamWriter& Stm)
 	this->Serialize(Stm);
 }
 
-void EventHandlerTypeClass::HandleEvent(TechnoClass* pOwner, std::map<EventScopeType, TechnoClass*> participants)
+void EventHandlerTypeClass::HandleEvent(TechnoClass* pOwner, std::map<EventScopeType, TechnoClass*>* pParticipants)
 {
-	for (auto it = participants.begin(); it != participants.end(); ++it)
+	for (auto it = pParticipants->begin(); it != pParticipants->end(); ++it)
 	{
 		auto scopeType = it->first;
 		auto pTarget = it->second;
-		if (!CheckFilters(scopeType, pOwner, pTarget))
+		if (!CheckFilters(pParticipants, scopeType, pOwner, pTarget))
 			return;
 	}
 
-	for (auto it = participants.begin(); it != participants.end(); ++it)
+	for (auto it = pParticipants->begin(); it != pParticipants->end(); ++it)
 	{
 		auto scopeType = it->first;
 		auto pTarget = it->second;
-		ExecuteEffects(scopeType, pOwner, pTarget);
+		ExecuteEffects(pParticipants, scopeType, pOwner, pTarget);
 	}
 }
 
-bool EventHandlerTypeClass::CheckFilters(EventScopeType scopeType, TechnoClass* pOwner, TechnoClass* pTarget) const
+bool EventHandlerTypeClass::CheckFilters(std::map<EventScopeType, TechnoClass*>* pParticipants, EventScopeType scopeType, TechnoClass* pOwner, TechnoClass* pTarget) const
 {
 	for (auto const& handlerUnit : this->HandlerComps)
 	{
 		if (handlerUnit.get()->ScopeType == scopeType)
 		{
-			if (!handlerUnit.get()->CheckFilters(pOwner, pTarget))
+			if (!handlerUnit.get()->CheckFilters(pParticipants, pOwner, pTarget))
 			{
 				return false;
 			}
@@ -99,13 +101,13 @@ bool EventHandlerTypeClass::CheckFilters(EventScopeType scopeType, TechnoClass* 
 	return true;
 }
 
-void EventHandlerTypeClass::ExecuteEffects(EventScopeType scopeType, TechnoClass* pOwner, TechnoClass* pTarget) const
+void EventHandlerTypeClass::ExecuteEffects(std::map<EventScopeType, TechnoClass*>* pParticipants, EventScopeType scopeType, TechnoClass* pOwner, TechnoClass* pTarget) const
 {
 	for (auto const& handlerUnit : this->HandlerComps)
 	{
 		if (handlerUnit.get()->ScopeType == scopeType)
 		{
-			handlerUnit.get()->ExecuteEffects(pOwner, pTarget);
+			handlerUnit.get()->ExecuteEffects(pParticipants, pOwner, pTarget);
 		}
 	}
 }
