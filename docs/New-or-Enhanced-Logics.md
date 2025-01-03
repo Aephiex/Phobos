@@ -434,16 +434,27 @@ Shield.InheritStateOnReplace=false          ; boolean
 - Event Types:
   - Each Event Handler must has an event type. The event types do not need to be separately listed.
   - There are a several `EventType` that will be invoked from the game.
-    - `WhenCreated`: When the techno is created. `They` is missing for the event.
-    - `WhenCaptured`: When the techno is captured, mind-controlled, or released from mind-control. `They` is missing for the event.
-    - `WhenCrush`: When the techno crushes something (not walls).
-    - `WhenCrushed`: When the techno is crushed.
-    - `WhenInfiltrate`: When the techno infiltrates into a building.
-    - `WhenInfiltrated`: When the building is infiltrated by a techno.
-    - `WhenLoad`: When the vehicle loads a passenger.
-    - `WhenUnload`: When the vehicle unloads a passenger.
-    - `WhenBoard`: When the techno is loaded into a vehicle.
-    - `WhenUnboard`: When the techno is unloaded from a vehicle.
+    - Single events:
+      - The `They` scope is missing for these events.
+      - `WhenCreated`: When the techno is created. Invoked even if the techno is pre-placed on the map.
+      - `WhenCaptured`: When the techno is captured, mind-controlled, or released from mind-control.
+    - Crushing:
+      - Invoked when a techno crushes something (not a wall). By the moment, the victim is not yet removed from the game.
+      - `WhenCrush`: Invoked on the crusher's perspective.
+      - `WhenCrushed`: Invoked on the victim's perspective.
+    - Infiltrating:
+      - Invoked when a techno infiltrates into a building, before spy effects are resolved.
+      - `WhenInfiltrate`: Invoked on the spy's perspective.
+      - `WhenInfiltrated`: Invoked on the building's perspective.
+    - Transport loading:
+      - Invoked when a techno is loaded into a transport, before or after it is actually inserted into its passengers.
+      - The `Before` events are not invoked when the transport abducts something *(Ares feature)*.
+      - `BeforeLoad`, `AfterLoad`: Invoked on the transport's perspective.
+      - `BeforeBoard`, `AfterBoard`: Invoked on the passenger's perspective.
+    - Transport unloading:
+      - Invoked when a techno leaves a transport.
+      - `WhenUnload`: Invoked on the transport's perspective.
+      - `WhenUnboard`: Invoked on the passenger's perspective.
 - Scopes:
   - Scopes are crucial to designate who will the filters and effects be applied to.
   - There are a several basic scopes that most events will have.
@@ -486,7 +497,7 @@ Shield.InheritStateOnReplace=false          ; boolean
   - Effects can be specified on a scope to ask for something to be done to it, if all filters pass.
   - The scope must exist. Nothing will be done to an empty scope.
   - Weapon Detonation:
-    - Aa weapon can be fired at the scope's position. *(This doesn't support Ares ivan bomb.)*
+    - A weapon can be fired at the scope's position. *(This doesn't support Ares ivan bomb.)*
     - `(scope).Effect.Weapon` specifies the weapon type to be fired at the position.
     - `~.Firer.Scope`, and `~.Firer.ExtScope`, can be used to specify the firer of the weapon. The firer is default to the `Me` scope.
     - `~.SpawnProj` can be set to true to have a projectile spawned from the firer's position and have it directed to the target's position. *(This doesn't support `Arcing=yes` projectiles.)*
@@ -506,77 +517,78 @@ Shield.InheritStateOnReplace=false          ; boolean
       - `~.Score` can be set to true to make the killed passengers be treated as if they were killed by a scope.
       - The scope can be determined with `~.Score.Scope` and `~.Score.ExtScope`, and if not set, defaults to the `Me` scope.
     - `(scope).Passenger.Create.Types`, and `~.Create.Nums`, can be specified so a number of passengers will be spawned inside the transport.
-      - `~.Create.Owner.Scope`, and `~.Create.Owner.ExScope`, can be used to specify the passengers' owner. If not specified, it is default to the `(scope)`.
+      - `~.Create.Owner.Scope`, and `~.Create.Owner.ExtScope`, can be used to specify the passengers' owner. If not specified, it is default to the `(scope)`.
 - Other usage notes:
-  - If any type conversion happened before or during the event, only the handlers attached to the old type will be invoked.
-
+  - If any type conversion happened right before or during the event, only the handlers attached to the old type will be invoked.
+  - Event Handlers on a same techno type are invoked in the numeral order.
+  - Effects on a same scope are resolved in the order they are listed in this document. To reveres the order, you may define multiple Event Handlers with identical event type and filters but different effects.
 
 In `rulesmd.ini`:
 ```ini
-[SOMETECHNO]                                   ; TechnoType
-EventHandlerN=...                              ; EventHandlerType
+[SOMETECHNO]                                       ; TechnoType
+EventHandlerN=...                                  ; EventHandlerType
 
-[SOMEHANDLER]                                  ; EventHandlerType
-EventType=                                     ; EventType
+[SOMEHANDLER]                                      ; EventHandlerType
+EventType=                                         ; EventType
 
 ;; filters
-(scope).Filter.Abstract=                       ; list of Affected Target Enumeration (none|land|water|empty|infantry|units|buildings|all)
-(scope).Filter.IsInAir=                        ; boolean
-(scope).Filter.TechnoTypes=                    ; list of TechnoTypes
-(scope).Filter.AttachedEffects=                ; list of AttachedEffectTypes
-(scope).Filter.ShieldTypes=                    ; list of ShieldTypes
-(scope).Filter.Veterancy=                      ; list of Veterancy Enumeration (none|rookie|veteral|elite)
-(scope).Filter.HPPercentage=                   ; list of HP Percentage Enumeration (none|full|green|greennotfull|yellow|red)
-(scope).Filter.Owner.House=                    ; list of Affected House Enumeration (none|owner/self|allies/ally|team|enemies/enemy|all)
-(scope).Filter.Owner.Sides=                    ; list of Sides
-(scope).Filter.Owner.Countries=                ; list of Countries
-(scope).Filter.Owner.IsHuman=                  ; boolean
-(scope).Filter.Owner.IsAI=                     ; boolean
-(scope).Filter.IsBunkered=                     ; boolean
-(scope).Filter.IsMindControlled=               ; boolean
-(scope).Filter.IsMindControlled.Perma=         ; boolean
-(scope).Filter.MindControlling.Any=            ; boolean
-(scope).Filter.MindControlling.Type=           ; list of TechnoTypes
-(scope).Filter.Passengers.Any=                 ; boolean
-(scope).Filter.Passengers.Type=                ; list of TechnoTypes
-(scope).Filter.Upgrades.Any=                   ; boolean
-(scope).Filter.Upgrades.Type=                  ; list of BuildingTypes
-
-;; Note: effects on a same scope are resolved in the order they are listed in this document.
+(scope).Filter.Abstract=                           ; list of Affected Target Enumeration (none|land|water|empty|infantry|units|buildings|all)
+(scope).Filter.IsInAir=                            ; boolean
+(scope).Filter.TechnoTypes=                        ; list of TechnoTypes
+(scope).Filter.AttachedEffects=                    ; list of AttachedEffectTypes
+(scope).Filter.ShieldTypes=                        ; list of ShieldTypes
+(scope).Filter.Veterancy=                          ; list of Veterancy Enumeration (none|rookie|veteral|elite)
+(scope).Filter.HPPercentage=                       ; list of HP Percentage Enumeration (none|full|green|greennotfull|yellow|red)
+(scope).Filter.Owner.House=                        ; list of Affected House Enumeration (none|owner/self|allies/ally|team|enemies/enemy|all)
+(scope).Filter.Owner.Sides=                        ; list of Sides
+(scope).Filter.Owner.Countries=                    ; list of Countries
+(scope).Filter.Owner.IsHuman=                      ; boolean
+(scope).Filter.Owner.IsAI=                         ; boolean
+(scope).Filter.IsBunkered=                         ; boolean
+(scope).Filter.IsMindControlled=                   ; boolean
+(scope).Filter.IsMindControlled.Perma=             ; boolean
+(scope).Filter.MindControlling.Any=                ; boolean
+(scope).Filter.MindControlling.Type=               ; list of TechnoTypes
+(scope).Filter.Passengers.Any=                     ; boolean
+(scope).Filter.Passengers.Type=                    ; list of TechnoTypes
+(scope).Filter.Upgrades.Any=                       ; boolean
+(scope).Filter.Upgrades.Type=                      ; list of BuildingTypes
 
 ;; effects - weapon detonation
-(scope).Effect.Weapon=                         ; WeaponType
-(scope).Effect.Weapon.Firer.Scope=Me           ; basic scope type (Me|They)
-(scope).Effect.Weapon.Firer.ExtScope=          ; extended scope type (Transport|Bunker|MindController)
-(scope).Effect.Weapon.SpawnProj=false          ; boolean
+(scope).Effect.Weapon=                             ; WeaponType
+(scope).Effect.Weapon.Firer.Scope=Me               ; basic scope type (Me|They)
+(scope).Effect.Weapon.Firer.ExtScope=              ; extended scope type (Transport|Bunker|MindController)
+(scope).Effect.Weapon.SpawnProj=false              ; boolean
 
 ;; effects - type conversion
-(scope).Effect.ConvertN.From=                  ; list of TechnoTypes
-(scope).Effect.ConvertN.To=                    ; TechnoType
-(scope).Effect.ConvertN.AffectedHouses=all     ; list of Affected House Enumeration (none|owner/self|allies/ally|team|enemies/enemy|all)
+(scope).Effect.ConvertN.From=                      ; list of TechnoTypes
+(scope).Effect.ConvertN.To=                        ; TechnoType
+(scope).Effect.ConvertN.AffectedHouses=all         ; list of Affected House Enumeration (none|owner/self|allies/ally|team|enemies/enemy|all)
 ; where N = 0, 1, 2, ...
 ; or
-(scope).Effect.Convert.From=                   ; list of TechnoTypes
-(scope).Effect.Convert.To=                     ; TechnoType
-(scope).Effect.Convert.AffectedHouses=all      ; list of Affected House Enumeration (none|owner/self|allies/ally|team|enemies/enemy|all)
+(scope).Effect.Convert.From=                       ; list of TechnoTypes
+(scope).Effect.Convert.To=                         ; TechnoType
+(scope).Effect.Convert.AffectedHouses=all          ; list of Affected House Enumeration (none|owner/self|allies/ally|team|enemies/enemy|all)
 
 ;; effects - soylent bounty
-(scope).Effect.Soylent.Mult=                   ; double
-(scope).Effect.Soylent.IncludePassengers=false ; boolean
-(scope).Effect.Soylent.Scope=Me                ; basic scope type (Me|They)
-(scope).Effect.Soylent.ExtScope=               ; extended scope type (Transport|Bunker|MindController)
-(scope).Effect.Soylent.Display=true            ; boolean
-(scope).Effect.Soylent.Display.Houses=all      ; list of Affected House Enumeration (none|owner/self|allies/ally|team|enemies/enemy|all)
-(scope).Effect.Soylent.Display.Offset=0,0      ; X,Y, pixels relative to default
+(scope).Effect.Soylent.Mult=                       ; double
+(scope).Effect.Soylent.IncludePassengers=false     ; boolean
+(scope).Effect.Soylent.Scope=Me                    ; basic scope type (Me|They)
+(scope).Effect.Soylent.ExtScope=                   ; extended scope type (Transport|Bunker|MindController)
+(scope).Effect.Soylent.Display=true                ; boolean
+(scope).Effect.Soylent.Display.Houses=all          ; list of Affected House Enumeration (none|owner/self|allies/ally|team|enemies/enemy|all)
+(scope).Effect.Soylent.Display.Offset=0,0          ; X,Y, pixels relative to default
 
 ;; effects - passengers
-(scope).Effect.Passengers.Eject=false          ; boolean
-(scope).Effect.Passengers.Kill=false           ; boolean
-(scope).Effect.Passengers.Kill.Score=false     ; boolean
-(scope).Effect.Passengers.Kill.Score.Scope=Me  ; basic scope type (Me|They)
-(scope).Effect.Passengers.Kill.Score.ExtScope= ; extended scope type (Transport|Bunker|MindController)
-(scope).Effect.Passengers.Create.Types=        ; list of TechnoTypes
-(scope).Effect.Passengers.Create.Nums=         ; list of integers
+(scope).Effect.Passengers.Eject=false              ; boolean
+(scope).Effect.Passengers.Kill=false               ; boolean
+(scope).Effect.Passengers.Kill.Score=false         ; boolean
+(scope).Effect.Passengers.Kill.Score.Scope=Me      ; basic scope type (Me|They)
+(scope).Effect.Passengers.Kill.Score.ExtScope=     ; extended scope type (Transport|Bunker|MindController)
+(scope).Effect.Passengers.Create.Types=            ; list of TechnoTypes
+(scope).Effect.Passengers.Create.Nums=             ; list of integers
+(scope).Effect.Passengers.Create.Owner.Scope=      ; basic scope type (Me|They)
+(scope).Effect.Passengers.Create.Owner.ExtScope=   ; extended scope type (Transport|Bunker|MindController)
 ```
 
 #### Examples
