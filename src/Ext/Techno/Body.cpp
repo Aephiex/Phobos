@@ -511,6 +511,7 @@ void TechnoExt::ExtData::Serialize(T& Stm)
 		.Process(this->LastWarpInDelay)
 		.Process(this->IsBeingChronoSphered)
 		.Process(this->AggressiveStance)
+		.Process(this->HousingMe)
 		;
 }
 

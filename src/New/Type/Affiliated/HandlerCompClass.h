@@ -24,8 +24,9 @@ public:
 	bool IsDefined() const;
 
 	static TechnoClass* GetTrueTarget(TechnoClass* pTarget, Nullable<EventExtendedScopeType> ExtendedScopeType);
-	bool CheckFilters(std::map<EventScopeType, TechnoClass*>* pParticipants, TechnoClass* pOwner, TechnoClass* pTarget) const;
-	void ExecuteEffects(std::map<EventScopeType, TechnoClass*>* pParticipants, TechnoClass* pOwner, TechnoClass* pTarget) const;
+	static TechnoClass* GetTransportingTechno(TechnoClass* pTarget);
+	bool CheckFilters(std::map<EventScopeType, TechnoClass*>* pParticipants) const;
+	void ExecuteEffects(std::map<EventScopeType, TechnoClass*>* pParticipants) const;
 
 	bool Load(PhobosStreamReader& stm, bool registerForChange);
 	bool Save(PhobosStreamWriter& stm) const;

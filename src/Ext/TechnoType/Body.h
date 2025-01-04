@@ -519,6 +519,7 @@ public:
 		bool CanToggleAggressiveStance(TechnoClass* pTechno);
 
 		void InvokeEvent(EventTypeClass* pEventTypeClass, TechnoClass* pMe, TechnoClass* pThey) const;
+		void InvokeEvent(EventTypeClass* pEventTypeClass, std::map<EventScopeType, TechnoClass*>* pParticipants) const;
 
 		bool CanLoadPassenger(TechnoClass* pTransport, TechnoClass* pPassenger) const;
 		bool CanLoadAny(TechnoClass* pTransport, std::vector<TechnoClass*> pPassengerList) const;

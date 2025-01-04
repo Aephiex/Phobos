@@ -63,6 +63,9 @@ public:
 
 		bool AggressiveStance;                  // Aggressive stance that will auto target buildings
 
+		// The pointer to the Bio Reactor or garrisonable structure holding this techno.
+		BuildingClass* HousingMe;
+
 		ExtData(TechnoClass* OwnerObject) : Extension<TechnoClass>(OwnerObject)
 			, TypeExtData { nullptr }
 			, Shield {}
@@ -99,6 +102,7 @@ public:
 			, LastWarpInDelay { 0 }
 			, IsBeingChronoSphered { false }
 			, AggressiveStance { false }
+			, HousingMe {}
 		{ }
 
 		void OnEarlyUpdate();

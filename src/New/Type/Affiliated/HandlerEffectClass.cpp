@@ -32,6 +32,7 @@ HandlerEffectClass::HandlerEffectClass()
 	, Voice_Persist { false }
 	, Voice_Global { false }
 	, EVA {}
+	, EventInvokers {}
 { }
 
 std::unique_ptr<HandlerEffectClass> HandlerEffectClass::Parse(INI_EX& exINI, const char* pSection, const char* scopeName, const char* effectName)
@@ -160,10 +161,43 @@ void HandlerEffectClass::LoadFromINI(INI_EX& exINI, const char* pSection, const 
 	}
 	_snprintf_s(tempBuffer, sizeof(tempBuffer), "%s.%s.EVA", scopeName, effectName);
 	EVA.Read(exINI, pSection, tempBuffer);
+
+	// read event invokers
+	Nullable<EventInvokerTypeClass*> eventInvokerNullable;
+	for (size_t i = 0; ; ++i)
+	{
+		_snprintf_s(tempBuffer, sizeof(tempBuffer), "%s.%s.EventInvoker%d", scopeName, effectName, i);
+		eventInvokerNullable.Reset();
+		eventInvokerNullable.Read<true>(exINI, pSection, tempBuffer);
+		if (eventInvokerNullable.isset())
+		{
+			eventInvokerNullable.Get()->LoadFromINI(exINI);
+			this->EventInvokers.push_back(eventInvokerNullable.Get());
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	// read single event invokers
+	if (this->EventInvokers.empty())
+	{
+		_snprintf_s(tempBuffer, sizeof(tempBuffer), "%s.%s.EventInvoker", scopeName, effectName);
+		eventInvokerNullable.Reset();
+		eventInvokerNullable.Read<true>(exINI, pSection, tempBuffer);
+		if (eventInvokerNullable.isset())
+		{
+			eventInvokerNullable.Get()->LoadFromINI(exINI);
+			this->EventInvokers.push_back(eventInvokerNullable.Get());
+		}
+	}
 }
 
-void HandlerEffectClass::Execute(std::map<EventScopeType, TechnoClass*>* pParticipants, TechnoClass* pOwner, TechnoClass* pTarget) const
+void HandlerEffectClass::Execute(std::map<EventScopeType, TechnoClass*>* pParticipants, TechnoClass* pTarget) const
 {
+	auto pOwner = pParticipants->at(EventScopeType::Me);
+
 	// Weapon Detonation
 	if (Weapon.isset())
 	{
@@ -212,7 +246,8 @@ void HandlerEffectClass::Execute(std::map<EventScopeType, TechnoClass*>* pPartic
 		{
 			auto multiplier = Soylent_Mult.Get();
 			int nMoneyToGive = (int)(pTarget->GetTechnoType()->GetRefund(pTarget->Owner, true) * multiplier);
-			if (Soylent_IncludePassengers.Get() && pTarget->Passengers.NumPassengers > 0)
+
+			if (Soylent_IncludePassengers.Get())
 			{
 				nMoneyToGive += TechnoTypeExt::GetTotalSoylentOfPassengers(multiplier, pTarget);
 			}
@@ -236,24 +271,23 @@ void HandlerEffectClass::Execute(std::map<EventScopeType, TechnoClass*>* pPartic
 		{
 			auto const openTopped = pTarget->GetTechnoType()->OpenTopped;
 
+			// Remove each passenger and unlimbo (place) it at a random place nearby.
+			// This supports transport vehicles and Bio Reactors.
 			while (pTarget->Passengers.FirstPassenger)
 			{
 				FootClass* pPassenger = pTarget->Passengers.RemoveFirstPassenger();
-
-				auto const coords = pTarget->GetCoords();
-				auto const pCell = MapClass::Instance->GetCellAt(coords);
-				auto const isBridge = pCell->ContainsBridge();
-				auto const nCell = MapClass::Instance->NearByLocation(pCell->MapCoords,
-					SpeedType::Wheel, -1, MovementZone::Normal, isBridge, 1, 1, true,
-					false, false, isBridge, CellStruct::Empty, false, false);
-
-				pPassenger->Unlimbo(MapClass::Instance->TryGetCellAt(nCell)->GetCoords(), static_cast<DirType>(32 * ScenarioClass::Instance->Random.RandomRanged(0, 7)));
-
+				UnlimboAtRandomPlaceNearby(pPassenger, pTarget);
 				if (openTopped)
 				{
 					pTarget->ExitedOpenTopped(pPassenger);
 				}
 			}
+		}
+		else if (pTarget->GetOccupantCount() > 0)
+		{
+			auto pTargetBld = reinterpret_cast<BuildingClass*>(pTarget);
+			// BuildingClass* -> RemoveOccupants
+			reinterpret_cast<void(__thiscall*)(BuildingClass*, int, int)>(0x457DE0)(pTargetBld, 0, 0);
 		}
 	}
 
@@ -263,32 +297,37 @@ void HandlerEffectClass::Execute(std::map<EventScopeType, TechnoClass*>* pPartic
 		TechnoClass* pScorer = nullptr;
 		if (Passengers_Kill_Score.Get())
 		{
-			pScorer = pOwner;
 			if (Passengers_Kill_Score_Scope.isset())
-			{
 				pScorer = HandlerCompClass::GetTrueTarget(pParticipants->at(Passengers_Kill_Score_Scope.Get()), Passengers_Kill_Score_ExtScope);
-			}
+			else
+				pScorer = pOwner;
 		}
-
-		pTarget->KillPassengers(pScorer);
+		if (pTarget->Passengers.NumPassengers > 0)
+		{
+			pTarget->KillPassengers(pScorer);
+		}
+		else if (pTarget->GetOccupantCount() > 0)
+		{
+			// If it is garrisoned, it must be a garrisonable structure, so it is safe to use "reinterpret_cast" here.
+			auto pTargetBld = reinterpret_cast<BuildingClass*>(pTarget);
+			pTargetBld->KillOccupants(pScorer);
+		}
 	}
 
 	// Passenger Creation
 	if (!Passengers_Create_Types.empty())
 	{
-		TechnoClass* pPassengerOwnerScope = pTarget;
-		if (Passengers_Kill_Score.Get())
+		if (Passengers_Create_Owner_Scope.isset())
 		{
-			pPassengerOwnerScope = pOwner;
-			if (Passengers_Kill_Score_Scope.isset())
+			auto pPassengerOwnerScope = HandlerCompClass::GetTrueTarget(pParticipants->at(Passengers_Create_Owner_Scope.Get()), Passengers_Create_Owner_ExtScope);
+			if (pPassengerOwnerScope)
 			{
-				pPassengerOwnerScope = HandlerCompClass::GetTrueTarget(pParticipants->at(Passengers_Kill_Score_Scope.Get()), Passengers_Kill_Score_ExtScope);
+				this->CreatePassengers(pTarget, pPassengerOwnerScope);
 			}
 		}
-
-		if (pPassengerOwnerScope)
+		else
 		{
-			this->CreatePassengers(pTarget, pPassengerOwnerScope);
+			this->CreatePassengers(pTarget, pTarget);
 		}
 	}
 
@@ -341,9 +380,34 @@ void HandlerEffectClass::Execute(std::map<EventScopeType, TechnoClass*>* pPartic
 			VoxClass::PlayIndex(EVA.Get());
 		}
 	}
+
+	// Event Invoker
+	if (!EventInvokers.empty())
+	{
+		std::map<EventScopeType, TechnoClass*> participants = {
+			{ EventScopeType::Me, pTarget },
+			{ EventScopeType::They, pOwner },
+		};
+		for (auto pEventInvokerType : EventInvokers)
+		{
+			pEventInvokerType->TryExecute(pOwner->Owner, &participants);
+		}
+	}
+}
+
+void HandlerEffectClass::UnlimboAtRandomPlaceNearby(FootClass* pWhom, TechnoClass* pNearWhom) const
+{
+	auto const coords = pNearWhom->GetCoords();
+	auto const pCell = MapClass::Instance->GetCellAt(coords);
+	auto const isBridge = pCell->ContainsBridge();
+	auto const nCell = MapClass::Instance->NearByLocation(pCell->MapCoords,
+		SpeedType::Wheel, -1, MovementZone::Normal, isBridge, 1, 1, true,
+		false, false, isBridge, CellStruct::Empty, false, false);
+	pWhom->Unlimbo(MapClass::Instance->TryGetCellAt(nCell)->GetCoords(), static_cast<DirType>(32 * ScenarioClass::Instance->Random.RandomRanged(0, 7)));
 }
 
 // Basically copied from Ares "TechnoExt::ExtData::CreateInitialPayload()".
+// This supports transport vehicles, Bio Reactors, and garrisonable structures.
 void HandlerEffectClass::CreatePassengers(TechnoClass* pToWhom, TechnoClass* pPassengerOwnerScope) const
 {
 	auto const pType = pToWhom->GetTechnoType();
@@ -462,7 +526,8 @@ bool HandlerEffectClass::IsDefined() const
 		|| Veterancy_Set.isset()
 		|| Veterancy_Add.isset()
 		|| Voice.isset()
-		|| EVA.isset();
+		|| EVA.isset()
+		|| !EventInvokers.empty();
 }
 
 bool HandlerEffectClass::Load(PhobosStreamReader& stm, bool registerForChange)
@@ -506,5 +571,6 @@ bool HandlerEffectClass::Serialize(T& stm)
 		.Process(this->Voice_Persist)
 		.Process(this->Voice_Global)
 		.Process(this->EVA)
+		.Process(this->EventInvokers)
 		.Success();
 }
