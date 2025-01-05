@@ -246,6 +246,14 @@ public:
 		Nullable<bool> NoQueueUpToUnload;
 		Valueable<bool> CanBeBuiltOn;
 		Valueable<bool> HarvesterQuickUnloader;
+		Nullable<bool> Turret_IdleRotate;
+		Nullable<bool> Turret_PointToMouse;
+		Nullable<int> TurretROT;
+		Valueable<double> Turret_Restriction;
+		Valueable<double> Turret_ExtraAngle;
+		Valueable<bool> Turret_BodyOrientation;
+		Valueable<double> Turret_BodyOrientationAngle;
+		Valueable<bool> Turret_BodyOrientationSymmetric;
 
 		Nullable<AnimTypeClass*> Wake;
 		Nullable<AnimTypeClass*> Wake_Grapple;
@@ -492,6 +500,14 @@ public:
 			, NoQueueUpToUnload {}
 			, CanBeBuiltOn { false }
 			, HarvesterQuickUnloader { false }
+			, Turret_IdleRotate {}
+			, Turret_PointToMouse {}
+			, TurretROT {}
+			, Turret_Restriction { 180.0 }
+			, Turret_ExtraAngle { 0.0 }
+			, Turret_BodyOrientation { false }
+			, Turret_BodyOrientationAngle { 0.0 }
+			, Turret_BodyOrientationSymmetric { true }
 
 			, Wake { }
 			, Wake_Grapple { }
@@ -510,6 +526,10 @@ public:
 		virtual void SaveToStream(PhobosStreamWriter& Stm) override;
 
 		void ApplyTurretOffset(Matrix3D* mtx, double factor = 1.0);
+		DirStruct GetTurretDesiredDir(DirStruct defaultDir);
+		void SetTurretLimitedDir(FootClass* pThis, DirStruct desiredDir);
+		short GetTurretLimitedRaw(short currentDirectionRaw);
+		DirStruct GetBodyDesiredDir(DirStruct currentDir, DirStruct defaultDir);
 
 		void InitCrusherLevel();
 		int GetCrusherLevel(FootClass* pCrusher) const;
@@ -544,6 +564,8 @@ public:
 	};
 
 	static ExtContainer ExtMap;
+
+	static constexpr double AngleToRaw = (65536.0 / 360);
 
 	static void ApplyTurretOffset(TechnoTypeClass* pType, Matrix3D* mtx, double factor = 1.0);
 	static TechnoTypeClass* GetTechnoType(ObjectTypeClass* pType);

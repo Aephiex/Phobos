@@ -383,6 +383,7 @@ This page lists all the individual contributions to the project by their author.
   - Building placing and deploying logic enhancement
   - Burst without delay
   - Simplified unloading for miners
+  - Customized Vehicle Turret Rotation
 - **Ollerus**
   - Build limit group enhancement
   - Customizable rocker amplitude
