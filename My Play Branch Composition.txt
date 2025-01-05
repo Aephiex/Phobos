@@ -29,3 +29,5 @@ CrimRecya's works:
 	https://github.com/CrimRecya/Phobos/tree/develop-BurstNoDelay
 • Harvesters quick unload
 	https://github.com/CrimRecya/Phobos/tree/develop-QuickUnloader
+• Turret expanded
+	https://github.com/CrimRecya/Phobos/tree/develop-UnitTurret
