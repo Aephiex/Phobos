@@ -502,7 +502,6 @@ public:
 
 		virtual ~ExtData() = default;
 		virtual void LoadFromINIFile(CCINIClass* pINI) override;
-		void AppendEventHandlerType(EventHandlerTypeClass* pEventHandlerTypeClass);
 		virtual void Initialize() override;
 
 		virtual void InvalidatePointer(void* ptr, bool bRemoved) override { }
