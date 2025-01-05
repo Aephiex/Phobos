@@ -1875,27 +1875,10 @@ DeployedCrushableLevel=                             ; integer; this only works f
 ### Delay automatic attack on the controlled unit
 
 - Now you can make the techno that has just been mind controlled not be automatically attacked by its original friendly forces for a period of time defined by `AttackMindControlledDelay`. This will not affect the manual selection of attacks and is useless with permanent mind control.
-=======
-### Customized Vehicle Turret Rotation
-
-- When `ExpandTurretRotation` is set to true, the following functions will be enabled.
-- Units with turret without `TurretSpins=true` can looks more vivid when it is in idle.
-  - `Turret.IdleRotate` controls whether units can rotate their turrets when in idle. Defaults to `[AudioVisual]` -> `Turret.IdleRotate`.
-  - `Turret.PointToMouse` controls whether units will turn their turrets to your mouse when in idle. Defaults to `[AudioVisual]` -> `Turret.PointToMouse`.
-  - `Turret.IdleRestartMin` and `Turret.IdleRestartMax` control the delay from idle to action occurrence together.
-  - `Turret.IdleIntervalMin` and `Turret.IdleIntervalMax` control the delay between every idle actions together.
-- The turret and body of the units can now be rotated under control.
-  - `Turret.Restriction` defines the angle at which the turret can be turned to both sides.
-  - `Turret.ExtraAngle` defines the additional rotation angle of the turret, and `Turret.Restriction` will also rotate with this value. The positive number is clockwise and the negative number is counterclockwise, that is, what angle the turret should use by default or face the target.
-  - `Turret.BodyOrientation` controls whether the body needs to aim at the target when firing.
-  - `Turret.BodyOrientationAngle` defines the additional rotation angle of the body when aiming at the target. The positive number is clockwise and the negative number is counterclockwise, that is, what angle the body should use to face the target.
-  - `Turret.BodyOrientationSymmetric` controls whether both sides of the additional body rotation angle can be used.
->>>>>>> origin/develop-UnitTurret
 
 In `rulesmd.ini`:
 ```ini
 [General]
-<<<<<<< HEAD
 AttackMindControlledDelay=0     ; integer, game frames
 ```
 
@@ -1924,7 +1907,26 @@ In `rulesmd.ini`:
 ```ini
 [SOMETECHNO]                   ; UnitType
 HarvesterQuickUnloader=false   ; boolean
-=======
+```
+
+### Customized Vehicle Turret Rotation
+
+- When `ExpandTurretRotation` is set to true, the following functions will be enabled.
+- Units with turret without `TurretSpins=true` can looks more vivid when it is in idle.
+  - `Turret.IdleRotate` controls whether units can rotate their turrets when in idle. Defaults to `[AudioVisual]` -> `Turret.IdleRotate`.
+  - `Turret.PointToMouse` controls whether units will turn their turrets to your mouse when in idle. Defaults to `[AudioVisual]` -> `Turret.PointToMouse`.
+  - `Turret.IdleRestartMin` and `Turret.IdleRestartMax` control the delay from idle to action occurrence together.
+  - `Turret.IdleIntervalMin` and `Turret.IdleIntervalMax` control the delay between every idle actions together.
+- The turret and body of the units can now be rotated under control.
+  - `Turret.Restriction` defines the angle at which the turret can be turned to both sides.
+  - `Turret.ExtraAngle` defines the additional rotation angle of the turret, and `Turret.Restriction` will also rotate with this value. The positive number is clockwise and the negative number is counterclockwise, that is, what angle the turret should use by default or face the target.
+  - `Turret.BodyOrientation` controls whether the body needs to aim at the target when firing.
+  - `Turret.BodyOrientationAngle` defines the additional rotation angle of the body when aiming at the target. The positive number is clockwise and the negative number is counterclockwise, that is, what angle the body should use to face the target.
+  - `Turret.BodyOrientationSymmetric` controls whether both sides of the additional body rotation angle can be used.
+
+In `rulesmd.ini`:
+```ini
+[General]
 ExpandTurretRotation=no             ; boolean
 
 [AudioVisual]
@@ -1943,7 +1945,6 @@ Turret.ExtraAngle=0                 ; floating point value
 Turret.BodyOrientation=no           ; boolean
 Turret.BodyOrientationAngle=0       ; floating point value
 Turret.BodyOrientationSymmetric=yes ; boolean
->>>>>>> origin/develop-UnitTurret
 ```
 
 ## Terrain
