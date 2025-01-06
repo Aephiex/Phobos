@@ -7,6 +7,8 @@ Aephiex's works:
 	https://github.com/Aephiex/Phobos/CrusherLevelSystem
 • Basic Event System
 	https://github.com/Aephiex/Phobos/BasicEventSystem
+• Passenger Lock
+	https://github.com/Aephiex/Phobos/PassengerLock
 
 NetsuNegi's works:
 • Super Weapon Sidebar
