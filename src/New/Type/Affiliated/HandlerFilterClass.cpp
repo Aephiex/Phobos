@@ -9,6 +9,9 @@ HandlerFilterClass::HandlerFilterClass()
 	, ShieldTypes {}
 	, Veterancy {}
 	, HPPercentage {}
+	, IsPassenger {}
+	, IsParasited {}
+	, IsParasiting {}
 	, IsBunkered {}
 	, IsMindControlled {}
 	, IsMindControlled_Perma {}
@@ -60,6 +63,12 @@ void HandlerFilterClass::LoadFromINI(INI_EX& exINI, const char* pSection, const 
 	_snprintf_s(tempBuffer, sizeof(tempBuffer), "%s.%s.HPPercentage", scopeName, filterName);
 	HPPercentage.Read(exINI, pSection, tempBuffer);
 
+	_snprintf_s(tempBuffer, sizeof(tempBuffer), "%s.%s.IsPassenger", scopeName, filterName);
+	IsPassenger.Read(exINI, pSection, tempBuffer);
+	_snprintf_s(tempBuffer, sizeof(tempBuffer), "%s.%s.IsParasited", scopeName, filterName);
+	IsParasited.Read(exINI, pSection, tempBuffer);
+	_snprintf_s(tempBuffer, sizeof(tempBuffer), "%s.%s.IsParasiting", scopeName, filterName);
+	IsParasiting.Read(exINI, pSection, tempBuffer);
 	_snprintf_s(tempBuffer, sizeof(tempBuffer), "%s.%s.IsBunkered", scopeName, filterName);
 	IsBunkered.Read(exINI, pSection, tempBuffer);
 	_snprintf_s(tempBuffer, sizeof(tempBuffer), "%s.%s.IsMindControlled", scopeName, filterName);
@@ -147,6 +156,24 @@ bool HandlerFilterClass::Check(HouseClass* pHouse, TechnoClass* pTarget, bool ne
 			return false;
 	}
 
+	if (IsPassenger.isset())
+	{
+		if (negative == (IsPassenger.Get() == (HandlerCompClass::GetTransportingTechno(pTarget) != nullptr)))
+			return false;
+	}
+
+	if (IsParasited.isset())
+	{
+		if (negative == (IsParasited.Get() == (HandlerCompClass::GetParasiteTechno(pTarget) != nullptr)))
+			return false;
+	}
+
+	if (IsParasiting.isset())
+	{
+		if (negative == (IsParasiting.Get() == (HandlerCompClass::GetHostTechno(pTarget) != nullptr)))
+			return false;
+	}
+
 	if (IsBunkered.isset())
 	{
 		if (negative == (pTarget->BunkerLinkedItem != nullptr))
@@ -211,9 +238,9 @@ bool HandlerFilterClass::Check(HouseClass* pHouse, TechnoClass* pTarget, bool ne
 			bool passengerFlag = false;
 			if (passengerAnyFlag)
 			{
-				for (NextObject obj(pTarget->Passengers.FirstPassenger->NextObject); obj; ++obj)
+				for (NextObject obj(pTarget->Passengers.FirstPassenger); obj; ++obj)
 				{
-					auto const pPassenger = abstract_cast<TechnoClass*>(*obj);
+					auto const pPassenger = reinterpret_cast<TechnoClass*>(*obj);
 					if (Passengers_Type.Contains(pPassenger->GetTechnoType()))
 					{
 						passengerFlag = true;
@@ -344,6 +371,9 @@ bool HandlerFilterClass::IsDefinedAnyTechnoCheck() const
 		|| !ShieldTypes.empty()
 		|| Veterancy.isset()
 		|| HPPercentage.isset()
+		|| IsPassenger.isset()
+		|| IsParasited.isset()
+		|| IsParasiting.isset()
 		|| IsBunkered.isset()
 		|| IsMindControlled.isset()
 		|| IsMindControlled_Perma.isset()
