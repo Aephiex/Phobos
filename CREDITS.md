@@ -400,6 +400,7 @@ This page lists all the individual contributions to the project by their author.
   - Aggressive stance toggle command (auto target unarmed enemy buildings)
   - crusher level system
   - Basic event handler system
+  - Passenger lock mechanic
   - initial fix for Ares academy not working on the initial payloads of vehicles built from a war factory
 - **Ares developers**
   - YRpp and Syringe which are used, save/load, project foundation and generally useful code from Ares
