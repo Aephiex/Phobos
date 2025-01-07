@@ -483,6 +483,7 @@ New:
 - Aggressive stance toggle command (auto target unarmed enemy buildings) (by Aephiex)
 - Crusher level system (by Aephiex)
 - Basic event handler system (by Aephiex)
+- Infantries can be configured to play die sound when crushed (by Aephiex)
 - Passenger lock mechanics (by Aephiex)
 - Passengers will use `AlternateFLH` in an reversed order they are loaded into the transport, and they will use from 0 to the last, meaning a given passenger's gunport can change as more passengers are boarded. This can be customized by `AlternateFLH.Fixed=true`, in which case the first passenger loaded will consistently use `AlternateFLH0`, and so on. (by Aephiex)
 
