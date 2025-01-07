@@ -228,6 +228,8 @@ void RulesExt::ExtData::LoadBeforeTypeData(RulesClass* pThis, CCINIClass* pINI)
 	this->CombatLightDetailLevel.Read(exINI, GameStrings::AudioVisual, "CombatLightDetailLevel");
 	this->LightFlashAlphaImageDetailLevel.Read(exINI, GameStrings::AudioVisual, "LightFlashAlphaImageDetailLevel");
 
+	this->InfantryPlayDieSoundWhenCrushed.Read(exINI, GameStrings::AudioVisual, "InfantryPlayDieSoundWhenCrushed");
+
 	this->CrusherLevelEnabled.Read(exINI, GameStrings::General, "CrusherLevelEnabled");
 	this->CrusherLevelEnabled_For1x1Buildings.Read(exINI, GameStrings::General, "CrusherLevelEnabled.For1x1Buildings");
 	this->CrusherLevel_Defaults_Crusher.Read(exINI, GameStrings::General, "CrusherLevel.Defaults.Crusher");

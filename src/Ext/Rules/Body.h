@@ -180,6 +180,8 @@ public:
 		Valueable<int> CombatLightDetailLevel;
 		Valueable<int> LightFlashAlphaImageDetailLevel;
 
+		Valueable<bool> InfantryPlayDieSoundWhenCrushed;
+
 		Valueable<bool> CrusherLevelEnabled;
 		Valueable<bool> CrusherLevelEnabled_For1x1Buildings;
 		Valueable<int> CrusherLevel_Defaults_Crusher;
@@ -321,6 +323,8 @@ public:
 			, WarheadParticleAlphaImageIsLightFlash { false }
 			, CombatLightDetailLevel { 0 }
 			, LightFlashAlphaImageDetailLevel { 0 }
+
+			, InfantryPlayDieSoundWhenCrushed { false }
 
 			, CrusherLevelEnabled { false }
 			, CrusherLevelEnabled_For1x1Buildings { false }
