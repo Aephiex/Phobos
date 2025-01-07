@@ -77,14 +77,14 @@ DEFINE_HOOK(0x6F9FA9, TechnoClass_AI_PromoteAnim, 0x6)
 
 		if (NewRanking != Rank::Rookie)
 		{
-			if (!RulesExt::Global()->Promote_VeteranAnimation && !RulesExt::Global()->Promote_EliteAnimation)
-				return aresProcess();
 			AnimClass* promAnim = nullptr;
-			if (NewRanking == Rank::Veteran && RulesExt::Global()->Promote_VeteranAnimation)
+			if (pThis->Veterancy.GetRemainingLevel() == Rank::Veteran && RulesExt::Global()->Promote_VeteranAnimation)
 				promAnim = GameCreate<AnimClass>(RulesExt::Global()->Promote_VeteranAnimation, pThis->GetCenterCoords());
 			else if (RulesExt::Global()->Promote_EliteAnimation)
 				promAnim = GameCreate<AnimClass>(RulesExt::Global()->Promote_EliteAnimation, pThis->GetCenterCoords());
-			promAnim->SetOwnerObject(pThis);
+
+			if (promAnim)
+				promAnim->SetOwnerObject(pThis);
 		}
 	}
 
