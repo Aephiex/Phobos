@@ -555,6 +555,9 @@ public:
 		bool CanLoadAny(TechnoClass* pTransport, std::map<int, std::vector<TechnoClass*>> passengerMap, std::set<int> passengerSizes) const;
 		bool CanBeOccupiedBy(TechnoClass* whom) const;
 
+		bool PassengerLockAffordable(TechnoClass* pThis) const;
+		int NumPassengersToBeLocked(TechnoClass* pThis) const;
+
 		// Ares 0.A
 		const char* GetSelectionGroupID() const;
 
