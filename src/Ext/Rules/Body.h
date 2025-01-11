@@ -191,6 +191,8 @@ public:
 		Valueable<int> CrushableLevel_Defaults_Uncrushable_Building;
 		Valueable<int> CrushableLevel_Defaults_OmniCrushResistant;
 
+		Valueable<bool> BuildingTypeSelectable;
+
 		ExtData(RulesClass* OwnerObject) : Extension<RulesClass>(OwnerObject)
 			, Storage_TiberiumIndex { -1 }
 			, InfantryGainSelfHealCap {}
@@ -334,6 +336,8 @@ public:
 			, CrushableLevel_Defaults_Uncrushable_Unit { 2 }
 			, CrushableLevel_Defaults_Uncrushable_Building { 3 }
 			, CrushableLevel_Defaults_OmniCrushResistant { 3 }
+
+			, BuildingTypeSelectable { false }
 		{ }
 
 		virtual ~ExtData() = default;

@@ -553,3 +553,31 @@ DEFINE_HOOK(0x70EFE0, TechnoClass_GetMaxSpeed, 0x6)
 	return SkipGameCode;
 }
 
+
+namespace BuildingTypeSelectable
+{
+	bool ProcessingIDMatches = false;
+}
+
+DEFINE_HOOK(0x732A85, sub_732950_SetContext1, 0x7)
+{
+	BuildingTypeSelectable::ProcessingIDMatches = true;
+	return 0;
+}
+
+DEFINE_HOOK(0x732B28, sub_732950_SetContext2, 0x6)
+{
+	BuildingTypeSelectable::ProcessingIDMatches = true;
+	return 0;
+}
+
+DEFINE_HOOK(0x732C97, TechnoClass_IDMatches_ResetContext, 0x5)
+{
+	BuildingTypeSelectable::ProcessingIDMatches = false;
+	return 0;
+}
+
+DEFINE_HOOK(0x465D40, BuildingClass_Is1x1AndUndeployable_BuildingMassSelectable, 0x6)
+{
+	return BuildingTypeSelectable::ProcessingIDMatches && RulesExt::Global()->BuildingTypeSelectable ? 0x465D68 : 0;
+}

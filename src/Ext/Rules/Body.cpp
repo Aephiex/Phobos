@@ -239,6 +239,8 @@ void RulesExt::ExtData::LoadBeforeTypeData(RulesClass* pThis, CCINIClass* pINI)
 	this->CrushableLevel_Defaults_Uncrushable_Building.Read(exINI, GameStrings::General, "CrushableLevel.Defaults.Uncrushable.Building");
 	this->CrushableLevel_Defaults_OmniCrushResistant.Read(exINI, GameStrings::General, "CrushableLevel.Defaults.OmniCrushResistant");
 
+	this->BuildingTypeSelectable.Read(exINI, GameStrings::General, "BuildingTypeSelectable");
+
 	// Section AITargetTypes
 	int itemsCount = pINI->GetKeyCount("AITargetTypes");
 	for (int i = 0; i < itemsCount; ++i)
@@ -441,6 +443,7 @@ void RulesExt::ExtData::Serialize(T& Stm)
 		.Process(this->CrushableLevel_Defaults_Uncrushable_Unit)
 		.Process(this->CrushableLevel_Defaults_Uncrushable_Building)
 		.Process(this->CrushableLevel_Defaults_OmniCrushResistant)
+		.Process(this->BuildingTypeSelectable)
 		;
 }
 
