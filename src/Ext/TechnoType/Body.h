@@ -545,8 +545,6 @@ public:
 		int GetCrusherLevel(FootClass* pCrusher) const;
 		int GetCrushableLevel(FootClass* pVictim) const;
 
-		bool CanToggleAggressiveStance(TechnoClass* pTechno);
-
 		void InvokeEvent(EventTypeClass* pEventTypeClass, TechnoClass* pMe, TechnoClass* pThey) const;
 		void InvokeEvent(EventTypeClass* pEventTypeClass, std::map<EventScopeType, TechnoClass*>* pParticipants) const;
 

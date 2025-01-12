@@ -146,6 +146,7 @@ public:
 		void InitAggressiveStance();
 		bool GetAggressiveStance() const;
 		void ToggleAggressiveStance();
+		bool CanToggleAggressiveStance();
 
 	private:
 		template <typename T>
