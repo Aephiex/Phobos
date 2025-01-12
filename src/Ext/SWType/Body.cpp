@@ -128,7 +128,13 @@ void SWTypeExt::ExtData::LoadFromINIFile(CCINIClass* const pINI)
 			Debug::INIParseFailed(pSection, "Message.Color", Phobos::readBuffer, "Expected a valid color scheme name.");
 	}
 
-	this->UIDescription.Read(exINI, pSection, "UIDescription");
+	// myPlayBranch custom: always use NAME:XXX_DESC as extended toolip instead of anything else.
+	// this->UIDescription.Read(exINI, pSection, "UIDescription");
+	char uiDescLabel[32];
+	strcpy(uiDescLabel, this->OwnerObject()->UINameLabel);
+	strcat(uiDescLabel, "_DESC");
+	this->UIDescription = CSFText(uiDescLabel);
+
 	this->CameoPriority.Read(exINI, pSection, "CameoPriority");
 	this->LimboDelivery_Types.Read(exINI, pSection, "LimboDelivery.Types");
 	this->LimboDelivery_IDs.Read(exINI, pSection, "LimboDelivery.IDs");

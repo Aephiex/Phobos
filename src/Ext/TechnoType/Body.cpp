@@ -675,7 +675,14 @@ void TechnoTypeExt::ExtData::LoadFromINIFile(CCINIClass* const pINI)
 	INI_EX exINI(pINI);
 
 	this->HealthBar_Hide.Read(exINI, pSection, "HealthBar.Hide");
-	this->UIDescription.Read(exINI, pSection, "UIDescription");
+
+	// myPlayBranch custom: always use NAME:XXX_DESC as extended toolip instead of anything else.
+	// this->UIDescription.Read(exINI, pSection, "UIDescription");
+	char uiDescLabel[32];
+	strcpy(uiDescLabel, this->OwnerObject()->UINameLabel);
+	strcat(uiDescLabel, "_DESC");
+	this->UIDescription = CSFText(uiDescLabel);
+
 	this->LowSelectionPriority.Read(exINI, pSection, "LowSelectionPriority");
 	this->MindControlRangeLimit.Read(exINI, pSection, "MindControlRangeLimit");
 	this->FactoryPlant_Multiplier.Read(exINI, pSection, "FactoryPlant.Multiplier");
