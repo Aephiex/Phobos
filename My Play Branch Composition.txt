@@ -33,3 +33,7 @@ CrimRecya's works:
 	https://github.com/CrimRecya/Phobos/tree/develop-QuickUnloader
 • Turret expanded
 	https://github.com/CrimRecya/Phobos/tree/develop-UnitTurret
+
+TaranDahl's works:
+• Type select for buildings
+	https://github.com/TaranDahl/MJobos/tree/TypeSelect
