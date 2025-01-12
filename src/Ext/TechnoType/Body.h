@@ -541,8 +541,6 @@ public:
 		short GetTurretLimitedRaw(short currentDirectionRaw);
 		DirStruct GetBodyDesiredDir(DirStruct currentDir, DirStruct defaultDir);
 
-		void InitCrusherLevel();
-
 		void InvokeEvent(EventTypeClass* pEventTypeClass, TechnoClass* pMe, TechnoClass* pThey) const;
 		void InvokeEvent(EventTypeClass* pEventTypeClass, std::map<EventScopeType, TechnoClass*>* pParticipants) const;
 
