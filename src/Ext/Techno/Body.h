@@ -141,6 +141,13 @@ public:
 		int GetCrusherLevel() const;
 		int GetCrushableLevel() const;
 
+		bool CanLoadPassenger(TechnoClass* pPassenger) const;
+		bool CanLoadAny(std::vector<TechnoClass*> pPassengerList) const;
+		bool CanLoadAny(std::map<int, std::vector<TechnoClass*>> passengerMap) const;
+
+		// Ares 0.2
+		bool CanBeOccupiedBy(TechnoClass* whom) const;
+
 		virtual ~ExtData() override;
 		virtual void InvalidatePointer(void* ptr, bool bRemoved) override { }
 		virtual void LoadFromStream(PhobosStreamReader& Stm) override;
