@@ -378,6 +378,7 @@ This page lists all the individual contributions to the project by their author.
   - Exclusive SuperWeapon Sidebar
   - Allow using waypoints, area guard and attack move with aircraft
   - Fix `Stop` command not working so well in some cases
+  - Fix aircraft `MovementZone` and `SpeedType` inconsistencies
   - Fast access vehicle
   - No turret unit turn to the target
   - Building placing and deploying logic enhancement
