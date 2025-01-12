@@ -515,6 +515,7 @@ void TechnoExt::ExtData::Serialize(T& Stm)
 		.Process(this->IsBeingChronoSphered)
 		.Process(this->AggressiveStance)
 		.Process(this->HousingMe)
+		.Process(this->WhenCreatedEventFired)
 		;
 }
 

@@ -531,7 +531,7 @@ Shield.InheritStateOnReplace=false          ; boolean
         <li><code>*.Owner.House</code>: Techno owner's relation with the handler's owner. <i>(none|owner/self|allies/ally|team|enemies/enemy|all)</i></li>
         <li><code>*.Owner.Sides</code>: Owner's country is any of the listed sides.</li>
         <li><code>*.Owner.Countries</code>: Owner's country is any of the listed countries.</li>
-        <li><code>*.Owner.Buildings</code>: Owner has a building that is any of the listed BuildingTypes.</li>
+        <li><code>*.Owner.Buildings</code>: Owner has a building that is any of the listed BuildingTypes. Building upgrades count.</li>
         <li><code>*.Owner.IsHuman</code>: Owner is human controlled.</li>
         <li><code>*.Owner.IsAI</code>: Owner is AI controlled.</li>
       </ul>
@@ -626,13 +626,14 @@ Shield.InheritStateOnReplace=false          ; boolean
     </details>
 - Other usage notes:
   - If any type conversion happened right before or during the event, only the handlers attached to the old type will be invoked.
-  - Effects are executed in an order like:
+  - Filters and effects are no real scripts. Multiple instances of a same key will override each other, and only the latest specified one will take effect. For example, multiple instances of `Me.Effect.Weapon` doesn't make multiple weapons to detonate at the same time on the `Me` scope.
+  - The order at which effects are specified in `rulesmd.ini` does not affect the order at which they are resolved. Effects are resolved in an order determined by the following rules.
     - Event Handlers on a same techno type are invoked in the numeral order.
     - Effects for the `Me` scope are executed before the efffects for the `They` scope.
     - Effects for the basic scopes are executed before those for the extended scopes.
     - Effects for the extended scopes are executed in the order the extended scopes are listed in the document.
     - Effects on a same scope are resolved in the order they are listed in this document.
-  - To reverse the order, define another event handler with identical event type and filters, but different effects.
+    - To reverse the order, define another event handler with identical event type and filters, but different effects.
 
 In `rulesmd.ini`:
 ```ini
@@ -719,7 +720,7 @@ EventTypeN=                                        ; EventType
 (scope).Effect.EventInvokerN=                      ; EventInvokerType
 ```
 
-#### Examples
+#### Examples of making use of the Event Handlers
 
 <ul>
   <li>
@@ -862,6 +863,53 @@ EventInvokerN=                             ; EventInvokerType
 [SOMEHANDLER]                              ; EventHandlerType
 (scope).Effect.EventInvokerN=              ; EventInvokerType
 ```
+
+#### Examples of making use of the Event Invokers
+
+<ul>
+  <li>
+    <details>
+      <summary>Battle Fortresses make all garrisoned G.I.s and Guardian G.I.s synchronize with the vehicle's veterancy, will not do the same to other garrisoned infantry units, and will not cause elite infantry to demote to veteran.</summary>
+      <pre lang="ini"><code>[BFRT]
+EventHandler0=EH_BFRT_Veteran
+EventHandler0=EH_BFRT_Elite
+<br/>
+[EH_BFRT_Veteran]
+EventType=WhenPromoted
+Me.Filter.Veterancy=veteran
+Me.Effect.EventInvoker=EV_BFRT_Veteran
+;; When I promote into Veteran, I use the said invoker on myself.
+<br/>
+[EH_BFRT_Elite]
+EventType=WhenPromoted
+Me.Filter.Veterancy=elite
+Me.Effect.EventInvoker=EV_BFRT_Elite
+;; When I promote into Elite, I use the said invoker on myself.
+<br/>
+[EV_BFRT_Veteran]
+Target.PassDown.Passengers=true
+Target.Filter.TechnoTypes=E1,GGI
+Target.ExtraEventHandler=EEH_BFRT_Veteran
+;; When the invoker is invoked on me, it is passed down to my passengers as well.
+;; Only G.I.s and Guardian G.I.s will be affected, meaning myself and other infantries will not be affected.
+<br/>
+[EV_BFRT_Elite]
+Target.PassDown.Passengers=true
+Target.Filter.TechnoTypes=E1,GGI
+Target.ExtraEventHandler=EEH_BFRT_Elite
+;; Ditto.
+<br/>
+[EEH_BFRT_Veteran]
+Me.Filter.Veterancy=rookie
+Me.Effect.Veterancy.Set=veteran
+;; This handler is attached to G.I.s and Guardian G.I.s, and will make them promote into Veteran.
+<br/>
+[EEH_BFRT_Elite]
+Me.Effect.Veterancy.Set=elite
+;; This handler is attached to G.I.s and Guardian G.I.s, and will make them promote into Elite</code></pre>
+    </details>
+  </li>
+</ul>
 
 ## Animations
 

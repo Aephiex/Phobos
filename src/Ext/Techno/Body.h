@@ -66,8 +66,8 @@ public:
 
 		bool AggressiveStance;                  // Aggressive stance that will auto target buildings
 
-		// The pointer to the Bio Reactor or garrisonable structure holding this techno.
-		BuildingClass* HousingMe;
+		BuildingClass* HousingMe;              // The pointer to the Bio Reactor or garrisonable structure holding this techno.
+		bool WhenCreatedEventFired;            // This is true if the techno's "WhenCreated" event is fired, so it doesn't fire again when loading a save.
 
 		ExtData(TechnoClass* OwnerObject) : Extension<TechnoClass>(OwnerObject)
 			, TypeExtData { nullptr }
@@ -109,6 +109,7 @@ public:
 			, IsBeingChronoSphered { false }
 			, AggressiveStance { false }
 			, HousingMe {}
+			, WhenCreatedEventFired { false }
 		{ }
 
 		void OnEarlyUpdate();
