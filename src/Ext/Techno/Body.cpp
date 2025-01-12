@@ -493,6 +493,7 @@ int TechnoExt::ExtData::GetCrushableLevel() const
 // it doesn't check if this transport is actually a transport or not.
 bool TechnoExt::ExtData::CanLoadPassenger(TechnoClass* pPassenger) const
 {
+	auto const pTransport = this->OwnerObject();
 	auto const pTransportTypeExt = this->TypeExtData;
 	auto const pTransportType = pTransportTypeExt->OwnerObject();
 	auto const pPassengerType = pPassenger->GetTechnoType();
@@ -518,7 +519,6 @@ bool TechnoExt::ExtData::CanLoadAny(std::vector<TechnoClass*> pPassengerList) co
 // Checks if a transport can load any of the passengers inside a map.
 bool TechnoExt::ExtData::CanLoadAny(std::map<int, std::vector<TechnoClass*>> passengerMap) const
 {
-	auto const pTransport = this->OwnerObject();
 	auto const pTransportTypeExt = this->TypeExtData;
 	auto const pTransportType = pTransportTypeExt->OwnerObject();
 	auto const sizeLimit = static_cast<int>(pTransportType->SizeLimit);
