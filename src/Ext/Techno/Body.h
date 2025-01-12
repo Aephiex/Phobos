@@ -138,6 +138,9 @@ public:
 		void ManualIdleAction();
 		void StopRotateWithNewROT(int ROT = -1);
 
+		int GetCrusherLevel() const;
+		int GetCrushableLevel() const;
+
 		virtual ~ExtData() override;
 		virtual void InvalidatePointer(void* ptr, bool bRemoved) override { }
 		virtual void LoadFromStream(PhobosStreamReader& Stm) override;

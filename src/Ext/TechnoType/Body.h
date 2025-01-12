@@ -542,8 +542,6 @@ public:
 		DirStruct GetBodyDesiredDir(DirStruct currentDir, DirStruct defaultDir);
 
 		void InitCrusherLevel();
-		int GetCrusherLevel(FootClass* pCrusher) const;
-		int GetCrushableLevel(FootClass* pVictim) const;
 
 		void InvokeEvent(EventTypeClass* pEventTypeClass, TechnoClass* pMe, TechnoClass* pThey) const;
 		void InvokeEvent(EventTypeClass* pEventTypeClass, std::map<EventScopeType, TechnoClass*>* pParticipants) const;
