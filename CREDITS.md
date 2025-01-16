@@ -375,8 +375,6 @@ This page lists all the individual contributions to the project by their author.
   - Allow to change the speed of gas particles
 - **CrimRecya**
   - Fix `LimboKill` not working reliably
-  - Delay automatic attack on the controlled unit
-  - Exclusive SuperWeapon Sidebar
   - Allow using waypoints, area guard and attack move with aircraft
   - Fix `Stop` command not working so well in some cases
   - Fix aircraft `MovementZone` and `SpeedType` inconsistencies
@@ -388,6 +386,8 @@ This page lists all the individual contributions to the project by their author.
   - Burst without delay
   - Simplified unloading for miners
   - Customized Vehicle Turret Rotation
+  - Delay automatic attack on the controlled unit
+  - Exclusive SuperWeapon Sidebar
 - **Ollerus**
   - Build limit group enhancement
   - Customizable rocker amplitude

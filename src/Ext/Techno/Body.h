@@ -55,7 +55,7 @@ public:
 		CellClass* FiringObstacleCell; // Set on firing if there is an obstacle cell between target and techno, used for updating WaveClass target etc.
 		CDTimerClass UnitAutoDeployTimer;
 		bool IsDetachingForCloak; // Used for checking animation detaching, set to true before calling Detach_All() on techno when this anim is attached to and to false after when cloaking only.
-		int LastBeControlledFrame;
+		int BeControlledThreatFrame;
 
 		// Used for Passengers.SyncOwner.RevertOnExit instead of TechnoClass::InitialOwner / OriginallyOwnedByHouse,
 		// as neither is guaranteed to point to the house the TechnoClass had prior to entering transport and cannot be safely overridden.
@@ -102,7 +102,7 @@ public:
 			, FiringObstacleCell {}
 			, UnitAutoDeployTimer {}
 			, IsDetachingForCloak { false }
-			, LastBeControlledFrame { 0 }
+			, BeControlledThreatFrame { 0 }
 			, OriginalPassengerOwner {}
 			, HasRemainingWarpInDelay { false }
 			, LastWarpInDelay { 0 }
