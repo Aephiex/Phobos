@@ -477,6 +477,7 @@ New:
 - Simplified unloading for miners (by CrimRecya & TaranDahl)
 - Unit `Speed` setting now accepts floating point values (by Starkku)
 - Custom exit cell for infantry factory (by Starkku)
+- Type select for buildings (code by TaranDahl(航味麻酱), doc by Ollerus)
 - Delay automatic attack on the controlled unit (by CrimRecya)
 - Fast access vehicle (by CrimRecya)
 - No turret unit turn to the target (by CrimRecya & TaranDahl)
