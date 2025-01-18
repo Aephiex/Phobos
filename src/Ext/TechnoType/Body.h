@@ -542,7 +542,7 @@ public:
 		DirStruct GetBodyDesiredDir(DirStruct currentDir, DirStruct defaultDir);
 
 		void InvokeEvent(EventTypeClass* pEventTypeClass, TechnoClass* pMe, TechnoClass* pThey) const;
-		void InvokeEvent(EventTypeClass* pEventTypeClass, std::map<EventScopeType, TechnoClass*>* pParticipants) const;
+		void InvokeEvent(EventTypeClass* pEventTypeClass, std::map<EventActorType, AbstractClass*>* pParticipants) const;
 
 		bool PassengerLockAffordable(TechnoClass* pThis) const;
 		int NumPassengersToBeLocked(TechnoClass* pThis) const;
