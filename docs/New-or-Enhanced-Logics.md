@@ -486,7 +486,7 @@ Shield.InheritStateOnReplace=false          ; boolean
   </details>
 - Custom event types can be used. These events will only be invoked through Event Invokers.
 - Other usage notes:
-  - If any type conversion happened right before or during the event, only the handlers attached to the old type will be invoked.
+  - If any type conversion happened right before or during the event, only the handlers attached to the old type will be invoked. For example, if two event triggers were invoked at a same moment, the first one converted the techno to a different type, the second one will resolve nevertheless, and the event triggers defined on the new type will not be invoked at this moment.
 
 In `rulesmd.ini`:
 ```ini
@@ -513,7 +513,8 @@ TriggerN.EventHandler=...                          ; EventHandlerType
 - Filters:
   - Filters can be specified on an actor to ask for something to be true about it, or the event handler's effects do not resolve. Filters are defined like <code>(actor).Filter.*</code>. 
   - Negative Filters can be specified on an actor to ask for something to be false about it, or the event handler's effects do not resolve. Negative Filters are defined like <code>(actor).NegFilter.*</code>.
-  - If any Filter or Negative filter is specified on an actor, the actor must exist, or the filter will fail the check.
+  - All Filter entry must be true, and all Negative Filter entry must be false.
+  - If any Filter or Negative Filter is specified on an actor, the actor must exist, or the filter will fail the check.
   - <details>
       <summary>Expand to see available Techno filter types. These filters fail the check if the actor is not a techno, even negative filters will do.</summary>
       <ul>
@@ -651,16 +652,17 @@ TriggerN.EventHandler=...                          ; EventHandlerType
         </li>
       </ul>
     </details>
-- Other usage notes:
-  - Filters and effects are no real scripts. Multiple instances of a same key will override each other, and only the latest specified one will take effect. For example, multiple instances of `Me.Effect.Weapon` doesn't make multiple weapons to detonate at the same time on the `Me` actor.
-  - The order at which effects are specified in `rulesmd.ini` does not affect the order at which they are resolved. Effects are resolved in an order determined by the following rules.
-    - Event triggers on a same techno type are invoked in the numeral order.
-    - Effects for the `Me` actor are executed before the effects for the `They` actor.
-    - Effects for the basic actors are executed before those for the extended actors.
-    - Effects for the nesting extended actors are executed after their parents.
-    - Effects for the extended actors are executed in the order the extended actors are listed in the document.
-    - Effects on a same actor are resolved in the order they are listed in this document.
-    - To reverse the order, define another event handler with identical event type and filters, but different effects.
+- Next Handler:
+  - The `Next` Event Handler can be specified to be invoked right after this one. The `Next` handler is always invoked no matter if the original handler passed its filters.
+  - The Event Handlers have a few limitations with it, which can be overcame by defining a `Next` handler with identical effects but different filters, or identical filters but different effects.
+    - There is no `or` operator in Filters.
+    - Filters and Effects are no real scripts. Multiple instances of a same key will override each other, and only the latest specified one will take effect. 
+    - The order at which effects are specified in `rulesmd.ini` does not affect the order at which they are resolved. Effects are resolved in an order determined by the following rules.
+      - Effects for the `Me` actor are executed before the effects for the `They` actor.
+      - Effects for the basic actors are executed before those for the extended actors.
+      - Effects for the nesting extended actors are executed after their parents.
+      - Effects for the extended actors are executed in the order the extended actors are listed in the document.
+      - Effects on a same actor are resolved in the order they are listed in this document.
 
 #### Event Invokers
 
@@ -670,7 +672,9 @@ In `rulesmd.ini`:
 EventHandlerN=...                                  ; EventHandlerType
 
 [SOMEHANDLER]                                      ; EventHandlerType
-EventTypeN=                                        ; EventType
+
+;; Next handler
+Next=                                              ; EventHandlerType
 
 ;; filters - techno
 (actor).Filter.Abstract=                           ; list of Affected Target Enumeration (none|land|water|empty|infantry|units|buildings|all)
@@ -860,14 +864,13 @@ They.Effect.Veterancy.Set=elite</code></pre>
     <details>
       <summary>The Soviet Amphibious Transport functions like a mobile grinder that it sells everything loaded for money.</summary>
       <pre lang="ini"><code>[SAPC]
-Trigger0.EventType=WhenLoad
-Trigger0.EventHandler=EHAutoGrind0
-Trigger1.EventType=WhenLoad
-Trigger1.EventHandler=EHAutoGrind1
+Trigger.EventType=WhenLoad
+Trigger.EventHandler=EHAutoGrind0
 <br/>
 [EHAutoGrind0]
 They.Effect.Soylent.Mult=100%
 They.Effect.Soylent.IncludePassengers=yes
+Next=EHAutoGrind1
 <br/>
 [EHAutoGrind1]
 Me.Effect.Passengers.Kill=yes
@@ -875,7 +878,7 @@ Me.Effect.Voice=SellBuilding
 Me.Effect.Voice.Persist=yes
 ;; The effects for Me actor is executed before the effects for They actor.
 ;; If we don't reverse the order, the passengers will be killed before they yield any credits.
-;; To reverse the order, define another event handler with identical EventType and filters.</code></pre>
+;; To reverse the order, define Next handler.</code></pre>
     </details>
   </li>
   <li>
