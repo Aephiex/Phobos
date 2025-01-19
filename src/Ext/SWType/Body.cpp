@@ -130,10 +130,10 @@ void SWTypeExt::ExtData::LoadFromINIFile(CCINIClass* const pINI)
 
 	// myPlayBranch custom: always use NAME:XXX_DESC as extended toolip instead of anything else.
 	// this->UIDescription.Read(exINI, pSection, "UIDescription");
-	char uiDescLabel[32];
+	/*char uiDescLabel[32];
 	strcpy(uiDescLabel, this->OwnerObject()->UINameLabel);
 	strcat(uiDescLabel, "_DESC");
-	this->UIDescription = CSFText(uiDescLabel);
+	this->UIDescription = CSFText(uiDescLabel);*/
 
 	this->CameoPriority.Read(exINI, pSection, "CameoPriority");
 	this->LimboDelivery_Types.Read(exINI, pSection, "LimboDelivery.Types");
