@@ -148,6 +148,8 @@ public:
 		// Ares 0.2
 		bool CanBeOccupiedBy(TechnoClass* whom) const;
 
+		void UnlimboAtRandomPlaceNearby(const CoordStruct* pNearCoords) const;
+
 		virtual ~ExtData() override;
 		virtual void InvalidatePointer(void* ptr, bool bRemoved) override { }
 		virtual void LoadFromStream(PhobosStreamReader& Stm) override;

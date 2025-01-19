@@ -616,6 +616,16 @@ bool TechnoExt::ExtData::CanBeOccupiedBy(TechnoClass* whom) const
 		|| this->TypeExtData->AllowedOccupiers.Contains(whom->GetTechnoType());
 }
 
+void TechnoExt::ExtData::UnlimboAtRandomPlaceNearby(const CoordStruct* pNearCoords) const
+{
+	auto const pCell = MapClass::Instance->GetCellAt(*pNearCoords);
+	auto const isBridge = pCell->ContainsBridge();
+	auto const nCell = MapClass::Instance->NearByLocation(pCell->MapCoords,
+		SpeedType::Wheel, -1, MovementZone::Normal, isBridge, 1, 1, true,
+		false, false, isBridge, CellStruct::Empty, false, false);
+	this->OwnerObject()->Unlimbo(MapClass::Instance->TryGetCellAt(nCell)->GetCoords(), static_cast<DirType>(32 * ScenarioClass::Instance->Random.RandomRanged(0, 7)));
+}
+
 // =============================
 // load / save
 
